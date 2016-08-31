@@ -1,0 +1,12 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="CyrodiilAction">
+            <Dimensions x="200" y="42" />
+            <Anchor point="CENTER" />
+ 
+            <Controls>
+               
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>
