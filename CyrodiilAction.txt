@@ -2,3 +2,4 @@
 ## APIVersion: 100010
 
 CyrodiilAction.lua
+CyrodiilAction.xml

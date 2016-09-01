@@ -7,9 +7,12 @@ CyrodiilAction.name = "CyrodiilAction"
 function CyrodiilAction:Initialize()
 
 	EVENT_MANAGER:RegisterForEvent("event_keep", EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
+  
+  CyrodiilActionBG:SetAlpha(0.5)
+
   CHAT_SYSTEM:AddMessage("CyrodiilAction loaded !")
 
-  -- ...but we don't have anything to initialize yet. We'll come back to this.
+
 end
 
 function CyrodiilAction.OnAddOnLoaded(event, addonName)
