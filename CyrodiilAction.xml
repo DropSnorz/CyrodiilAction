@@ -1,11 +1,25 @@
 <GuiXml>
     <Controls>
-        <TopLevelControl name="CyrodiilAction" mouseEnabled="true" movable="true" clampedToScreen="false">
+    	<Control name="BattleLine" virtual="true">
+    		<Dimensions x="100" y="150" />
+    		<Anchor point="TOPLEFT" offsetY="20" />
+
+    				<Controls>
+        				<Label name="$(parent)InnerLabel" text="Label" font="ZoFontGame">
+            				<AnchorFill/>
+       					</Label>
+    				</Controls>
+		</Control>
+
+        <TopLevelControl name="CyrodiilActionWindow" mouseEnabled="true" movable="true" clampedToScreen="false">
             <Dimensions x="400" y="150" />
             <Anchor point="TOPLEFT" />
  	
             <Controls>
                 <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop" />
+                <Label name="TestLabel" text="TEST" font="ZoFontGame">
+            				<AnchorFill/>
+       			</Label>
             </Controls>
         </TopLevelControl>
     </Controls>

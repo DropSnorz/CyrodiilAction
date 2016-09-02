@@ -1,5 +1,8 @@
 ## Title: CyrodiilAction
 ## APIVersion: 100010
 
-CyrodiilAction.lua
 CyrodiilAction.xml
+
+CyrodiilAction.lua
+classes/Battle.lua
+

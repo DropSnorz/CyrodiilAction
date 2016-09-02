@@ -8,15 +8,18 @@ function CyrodiilAction:Initialize()
 
 	EVENT_MANAGER:RegisterForEvent("event_keep", EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
   
-  CyrodiilActionBG:SetAlpha(0.5)
-
+  CyrodiilActionWindowBG:SetAlpha(0.5)
+  TestLabel:SetText("Welcome in CyrodiilAction")
+  local battle = self.Battle.new(12)
   CHAT_SYSTEM:AddMessage("CyrodiilAction loaded !")
+
 
 
 end
 
 function CyrodiilAction.OnAddOnLoaded(event, addonName)
   -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
+  d(addonName)
   if addonName == CyrodiilAction.name then
     CyrodiilAction:Initialize()
   end
