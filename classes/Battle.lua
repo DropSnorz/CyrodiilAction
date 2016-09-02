@@ -19,7 +19,7 @@ function CyrodiilAction.Battle.new(keepID)
     self.keepType = GetKeepType(keepID)
 
     self.siege = {}
-    self:createView()
+    -- self:createView()
 
     return self
 end
@@ -28,8 +28,8 @@ end
 function CyrodiilAction.Battle:createView()
 
     view = CreateControlFromVirtual("BattleLine", CyrodiilActionWindow, "BattleLine", self.KeepID)
+    view:SetText(self.KeepName)
 end
-
 
 
 

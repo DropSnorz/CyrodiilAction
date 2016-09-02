@@ -1,26 +1,57 @@
 <GuiXml>
     <Controls>
-    	<Control name="BattleLine" virtual="true">
-    		<Dimensions x="100" y="150" />
-    		<Anchor point="TOPLEFT" offsetY="20" />
-
-    				<Controls>
-        				<Label name="$(parent)InnerLabel" text="Label" font="ZoFontGame">
-            				<AnchorFill/>
-       					</Label>
-    				</Controls>
-		</Control>
-
         <TopLevelControl name="CyrodiilActionWindow" mouseEnabled="true" movable="true" clampedToScreen="false">
-            <Dimensions x="400" y="150" />
+            <Dimensions x="400" y="170" />
             <Anchor point="TOPLEFT" />
  	
             <Controls>
                 <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop" />
-                <Label name="TestLabel" text="TEST" font="ZoFontGame">
+                <Label name="TestLabel" text="TEST" font="ZoFontGame" hidden="true">
             				<AnchorFill/>
        			</Label>
+
+       			<Control name="BattleLine1">
+    				<Dimensions x="400" y="40" />
+    				<Anchor point="TOPLEFT" offsetY="10" />
+
+    				<Controls>
+    					<Label name="ActionType1" text="?" font="ZoFontGame">
+    						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
+       					</Label>
+       					<Label name="KeepImage1" text="?" font="ZoFontGame">
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />
+       					</Label>
+        				<Label name="KeepNameLabel1" text="????????" font="ZoFontGame">
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="50" />
+       					</Label>
+       					<Label name="KeepDataLabel1" text="????????" font="ZoFontGame">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="200" />
+       					</Label>
+    				</Controls>
+				</Control>
+
+				<Control name="BattleLine2">
+    				<Dimensions x="400" y="40" />
+    				<Anchor point="TOPLEFT" offsetY="40" />
+
+    				<Controls>
+    					<Label name="ActionType2" text="?" font="ZoFontGame">
+    						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
+       					</Label>
+       					<Label name="KeepImage2" text="?" font="ZoFontGame">
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />
+       					</Label>
+        				<Label name="KeepNameLabel2" text="????????" font="ZoFontGame">
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="50" />
+       					</Label>
+       					<Label name="KeepDataLabel2" text="????????" font="ZoFontGame">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="200" />
+       					</Label>
+    				</Controls>
+				</Control>
             </Controls>
+
+
         </TopLevelControl>
     </Controls>
 </GuiXml>
