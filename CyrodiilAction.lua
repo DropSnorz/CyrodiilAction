@@ -67,7 +67,11 @@ function CyrodiilAction:updateView()
   for i = 0, 4 do
     if self.battles[i] ~= nil then
       local keepNameLabel = GetControl("KeepNameLabel" .. i)
+      local keepTexture = GetControl("KeepTexture" .. i)
       keepNameLabel:SetText(zo_strformat(self.battles[i].keepName))
+      keepTexture:SetTexture(self.battles[i]:GetKeepIcon())
+      keepTexture:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+
     end
   end 
 
@@ -76,9 +80,14 @@ end
 function CyrodiilAction:clearView()
 
   KeepNameLabel1:SetText("")
+  KeepTexture1:SetTexture("")
+  KeepTexture1:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
   KeepDataLabel1:SetText("")
   KeepNameLabel2:SetText("")
   KeepDataLabel2:SetText("")
+  KeepTexture2:SetTexture("")
+  KeepTexture2:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
+
 end
 
 EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_ADD_ON_LOADED, CyrodiilAction.OnAddOnLoaded)

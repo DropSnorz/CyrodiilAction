@@ -31,5 +31,16 @@ function CyrodiilAction.Battle:createView()
     view:SetText(self.KeepName)
 end
 
+function CyrodiilAction.Battle:GetKeepIcon()
+
+    if self.keepType == KEEPTYPE_RESOURCE then
+
+        local keepResourceType = GetKeepResourceType(self.keepID)
+        return CyrodiilAction.defaults.icons.keep.resource[keepResourceType]
+    else
+        return CyrodiilAction.defaults.icons.keep[self.keepType]
+    end
+end
+
 
 

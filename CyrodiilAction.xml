@@ -18,14 +18,15 @@
     					<Label name="ActionType1" text="?" font="ZoFontGame">
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Label>
-       					<Label name="KeepImage1" text="?" font="ZoFontGame">
+       					<Texture name="KeepTexture1">
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />
-       					</Label>
+   						</Texture>
         				<Label name="KeepNameLabel1" text="????????" font="ZoFontGame">
-        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="50" />
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="10"/>
        					</Label>
        					<Label name="KeepDataLabel1" text="????????" font="ZoFontGame">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="200" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="250" offsetY="10" />
        					</Label>
     				</Controls>
 				</Control>
@@ -38,17 +39,24 @@
     					<Label name="ActionType2" text="?" font="ZoFontGame">
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Label>
-       					<Label name="KeepImage2" text="?" font="ZoFontGame">
+       					<Texture name="KeepTexture2">
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />
-       					</Label>
+   						</Texture>
         				<Label name="KeepNameLabel2" text="????????" font="ZoFontGame">
-        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="50" />
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="10" />
        					</Label>
        					<Label name="KeepDataLabel2" text="????????" font="ZoFontGame">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="200" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="250" offsetY="10" />
        					</Label>
     				</Controls>
 				</Control>
+
+				<Texture name="HDivider" textureFile="EsoUI/Art/Miscellaneous/horizontalDivider.dds">
+        			<Dimensions y="4"/>
+       				<Anchor point="TOPLEFT" object="$(parent)" offsetY="380" />
+   				</Texture>
+
             </Controls>
 
 
