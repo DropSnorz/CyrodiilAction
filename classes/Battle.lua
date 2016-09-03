@@ -18,10 +18,22 @@ function CyrodiilAction.Battle.new(keepID)
     self.keepName = GetKeepName(keepID)
     self.keepType = GetKeepType(keepID)
 
+    self.owner = GetKeepAlliance(self.keepID, CyrodiilAction.battleContext)
+
     self.siege = {}
-    -- self:createView()
+    self:update()
 
     return self
+end
+
+function CyrodiilAction.Battle:update()
+
+    self.owner = GetKeepAlliance(self.keepID, CyrodiilAction.battleContext)
+
+    self.siege[ALLIANCE_ALDMERI_DOMINION] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_ALDMERI_DOMINION)
+    self.siege[ALLIANCE_DAGGERFALL_COVENANT] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_DAGGERFALL_COVENANT)
+    self.siege[ALLIANCE_EBONHEART_PACT] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_EBONHEART_PACT)
+
 end
 
 
@@ -30,6 +42,7 @@ function CyrodiilAction.Battle:createView()
     view = CreateControlFromVirtual("BattleLine", CyrodiilActionWindow, "BattleLine", self.KeepID)
     view:SetText(self.KeepName)
 end
+
 
 function CyrodiilAction.Battle:GetKeepIcon()
 

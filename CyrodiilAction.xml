@@ -26,7 +26,7 @@
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="10"/>
        					</Label>
        					<Label name="KeepDataLabel1" text="????????" font="ZoFontGame">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="250" offsetY="10" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="300" offsetY="10" />
        					</Label>
     				</Controls>
 				</Control>
@@ -47,7 +47,7 @@
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="10" />
        					</Label>
        					<Label name="KeepDataLabel2" text="????????" font="ZoFontGame">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="250" offsetY="10" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="300" offsetY="10" />
        					</Label>
     				</Controls>
 				</Control>

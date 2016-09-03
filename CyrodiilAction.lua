@@ -25,6 +25,7 @@ end
 
 function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, underAttack)
     local self = CyrodiilAction
+    self.battleContext = battlegroundContext
 
     --Optionally hide IC district battles
     if GetKeepType(keepID) == KEEPTYPE_IMPERIAL_CITY_DISTRICT then
@@ -38,6 +39,7 @@ function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, under
       d("Keep safe.")
       self:ProcessEndBattle(keepID)
     end
+
 end
 
 CyrodiilAction.battles = {}
@@ -64,14 +66,19 @@ end
 function CyrodiilAction:updateView()
 
   self:clearView()
-  for i = 0, 4 do
+  for i = 0, 2 do
     if self.battles[i] ~= nil then
-      local keepNameLabel = GetControl("KeepNameLabel" .. i)
-      local keepTexture = GetControl("KeepTexture" .. i)
+      local step = i
+      local keepNameLabel = GetControl("KeepNameLabel" ..step)
+      local keepTexture = GetControl("KeepTexture" .. step)
+      local keepDataLabel = GetControl("KeepDataLabel" .. step)
+
       keepNameLabel:SetText(zo_strformat(self.battles[i].keepName))
       keepTexture:SetTexture(self.battles[i]:GetKeepIcon())
-      keepTexture:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+      
+      keepTexture:SetColor(CyrodiilAction.defaults.alliance[self.battles[i].owner].color:UnpackRGBA())
 
+      keepDataLabel:SetText(self.battles[i].siege[ALLIANCE_DAGGERFALL_COVENANT].. " "..self.battles[i].siege[ALLIANCE_ALDMERI_DOMINION].." " ..self.battles[i].siege[ALLIANCE_EBONHEART_PACT])
     end
   end 
 
