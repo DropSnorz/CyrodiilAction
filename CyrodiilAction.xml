@@ -18,6 +18,10 @@
     					<Label name="ActionType1" text="?" font="ZoFontGame">
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Label>
+       					<Texture name="KeepAttackTexture1" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
+        					<Dimensions y="40" x="40"/>
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />
+   						</Texture>
        					<Texture name="KeepTexture1">
         					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />
@@ -39,6 +43,10 @@
     					<Label name="ActionType2" text="?" font="ZoFontGame">
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Label>
+       					<Texture name="KeepAttackTexture2" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
+        					<Dimensions y="40" x="40"/>
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />
+   						</Texture>
        					<Texture name="KeepTexture2">
         					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" />

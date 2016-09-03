@@ -29,7 +29,7 @@ end
 function CyrodiilAction.Battle:update()
 
     self.owner = GetKeepAlliance(self.keepID, CyrodiilAction.battleContext)
-
+    self.isKeepUnderAttack = GetKeepUnderAttack(self.keepID)
     self.siege[ALLIANCE_ALDMERI_DOMINION] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_ALDMERI_DOMINION)
     self.siege[ALLIANCE_DAGGERFALL_COVENANT] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_DAGGERFALL_COVENANT)
     self.siege[ALLIANCE_EBONHEART_PACT] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_EBONHEART_PACT)
