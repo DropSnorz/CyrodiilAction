@@ -6,8 +6,9 @@
  	
             <Controls>
                 <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop" />
-                <Label name="TestLabel" text="TEST" font="ZoFontGame" hidden="true">
-            				<AnchorFill/>
+                <Label name="TitleLabel" text="There is no action in Cyrodiil" font="ZoFontGame" hidden="true">
+            			<Anchor point="TOP" offsetY="10" />
+
        			</Label>
 
        			<Control name="BattleLine1">

@@ -7,11 +7,11 @@ CyrodiilAction.name = "CyrodiilAction"
 function CyrodiilAction:Initialize()
 
 	EVENT_MANAGER:RegisterForEvent("event_keep", EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
-  
+  self.battleContext = BGQUERY_LOCAL
   CyrodiilActionWindowBG:SetAlpha(0.5)
 
-  TestLabel:SetText("Welcome in CyrodiilAction")
-  CHAT_SYSTEM:AddMessage("CyrodiilAction loaded !")
+  self:scanKeeps()
+  self:updateView()
 
 
 
@@ -46,7 +46,7 @@ end
 CyrodiilAction.battles = {}
 function CyrodiilAction:ProcessNewBattle(keepID)
 
-  battle = self.Battle.new(keepID)
+  local battle = self.Battle.new(keepID)
   table.insert(self.battles, battle)
   self:updateView()
 
@@ -64,32 +64,63 @@ end
 end
 
 
+function CyrodiilAction:scanKeeps()
+
+      --Main keeps
+    for i=3,20 do
+      self:checkAdd(i)
+
+    end
+
+    --Outposts
+    for i=132,134 do
+        self:checkAdd(i)
+    end
+
+end
+
+function CyrodiilAction:checkAdd(keepID)
+
+  --TODO check if Keep in self.battles
+  --TODO count siege
+  if GetKeepUnderAttack(keepID, self.battleContext) then
+    local battle = self.Battle.new(keepID)
+    table.insert(self.battles, battle)
+  end
+end
+
+
 function CyrodiilAction:updateView()
 
   self:clearView()
-  for i = 0, 2 do
-    if self.battles[i] ~= nil then
-      local step = i
-      local keepNameLabel = GetControl("KeepNameLabel" ..step)
-      local keepAttackTexture = GetControl("KeepAttackTexture" .. step)
-      local keepTexture = GetControl("KeepTexture" .. step)
-      local keepDataLabel = GetControl("KeepDataLabel" .. step)
 
-      keepNameLabel:SetText(zo_strformat(self.battles[i].keepName))
-      keepAttackTexture:SetHidden(self.battles[i].isKeepUnderAttack)
-      keepAttackTexture:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
+  if table.getn(self.battles) == 0 then 
+    TitleLabel:SetHidden(false)
+  else
+    for i = 0, 2 do
+      if self.battles[i] ~= nil then
+        local step = i
+        local keepNameLabel = GetControl("KeepNameLabel" ..step)
+        local keepAttackTexture = GetControl("KeepAttackTexture" .. step)
+        local keepTexture = GetControl("KeepTexture" .. step)
+        local keepDataLabel = GetControl("KeepDataLabel" .. step)
 
-      keepTexture:SetTexture(self.battles[i]:GetKeepIcon())
-      keepTexture:SetColor(CyrodiilAction.defaults.alliance[self.battles[i].owner].color:UnpackRGBA())
+        keepNameLabel:SetText(zo_strformat(self.battles[i].keepName))
+        keepAttackTexture:SetHidden(not self.battles[i].isKeepUnderAttack)
+        keepAttackTexture:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
 
-      keepDataLabel:SetText(self.battles[i].siege[ALLIANCE_DAGGERFALL_COVENANT].. " "..self.battles[i].siege[ALLIANCE_ALDMERI_DOMINION].." " ..self.battles[i].siege[ALLIANCE_EBONHEART_PACT])
-    end
-  end 
+        keepTexture:SetTexture(self.battles[i]:GetKeepIcon())
+        keepTexture:SetColor(CyrodiilAction.defaults.alliance[self.battles[i].owner].color:UnpackRGBA())
 
+        keepDataLabel:SetText(self.battles[i].siege[ALLIANCE_DAGGERFALL_COVENANT].. " "..self.battles[i].siege[ALLIANCE_ALDMERI_DOMINION].." " ..self.battles[i].siege[ALLIANCE_EBONHEART_PACT])
+      end
+    end 
+  end
 end
 
 function CyrodiilAction:clearView()
 
+  TitleLabel:SetHidden(true)
   KeepNameLabel1:SetText("")
   KeepTexture1:SetTexture("")
   KeepTexture1:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
