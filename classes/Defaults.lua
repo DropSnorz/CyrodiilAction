@@ -6,6 +6,9 @@ local AD = ALLIANCE_ALDMERI_DOMINION
 local DC = ALLIANCE_DAGGERFALL_COVENANT
 local EP = ALLIANCE_EBONHEART_PACT
 
+CyrodiilAction.ACTION_ATTACK = 1
+CyrodiilAction.ACTION_DEFEND = 2
+
 CyrodiilAction.colors = {}
 local colors = CyrodiilAction.colors
 --Transparent BG colors

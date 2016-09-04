@@ -67,5 +67,29 @@ function CyrodiilAction.Battle:GetKeepIcon()
     end
 end
 
+function CyrodiilAction.Battle:getActionType()
+
+    if self.keepType == KEEPTYPE_RESOURCE then
+
+        local parentKeepID = GetParentKeep(self.keepID)
+        local parentKeepOwner = GetKeepAlliance(parentKeepID, CyrodiilAction.battleContext)
+
+        if parentKeepOwner == CyrodiilAction.playerAlliance then 
+            return CyrodiilAction.ACTION_DEFEND
+        else
+            return CyrodiilAction.ACTION_ATTACK
+        end
+
+    else
+        
+        if self.owner == CyrodiilAction.playerAlliance then 
+            return CyrodiilAction.ACTION_DEFEND
+
+        else
+            return CyrodiilAction.ACTION_ATTACK
+        end
+    end
+end
+
 
 

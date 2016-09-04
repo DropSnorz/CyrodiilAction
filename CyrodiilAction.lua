@@ -85,14 +85,8 @@ end
 
 function CyrodiilAction:scanKeeps()
 
-      --Main keeps
-    for i=3,20 do
-      self:checkAdd(i)
-
-    end
-
-    --Outposts
-    for i=132,134 do
+    --Keeps, ressources and Outposts
+    for i=1,134 do
         self:checkAdd(i)
     end
 
@@ -134,10 +128,17 @@ function CyrodiilAction:updateView()
     for i = 0, 4 do
       if self.battles[i] ~= nil then
         local step = i
+        local actionTypeLabel = GetControl("ActionType"..i)
         local keepNameLabel = GetControl("KeepNameLabel" ..step)
         local keepAttackTexture = GetControl("KeepAttackTexture" .. step)
         local keepTexture = GetControl("KeepTexture" .. step)
         local keepDataLabel = GetControl("KeepDataLabel" .. step)
+
+        if self.battles[i]:getActionType() == CyrodiilAction.ACTION_ATTACK then
+          actionTypeLabel:SetText("A")
+        else
+          actionTypeLabel:SetText("D")
+        end
 
         keepNameLabel:SetText(zo_strformat("<<C:1>>",self.battles[i].keepName))
         keepAttackTexture:SetHidden(not self.battles[i].isKeepUnderAttack)
@@ -181,3 +182,31 @@ function CyrodiilAction:clearView()
 end
 
 EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_ADD_ON_LOADED, CyrodiilAction.OnAddOnLoaded)
+
+
+    -- When the event fires, call this function & pass it keepId (given to you by the event) --
+function GetParentKeep(_keepId) 
+    local iKeepResourceType = GetKeepResourceType(_keepId) 
+        
+        -- If the resourceType is none then I'm guessing that makes it the main (parent) keep? --
+        -- so do this to check if its a main (parent) keep under attack --
+        if iKeepResourceType ==  RESOURCETYPE_NONE then
+            return _keepId
+        end
+        
+        -- Otherwise it is a resource keep so we need to find out which main (parent) --
+        -- keep it belongs too --
+        
+        local iNumKeeps = GetNumKeeps()
+        
+        for i = 1, iNumKeeps do
+            local parentKeepId = GetKeepKeysByIndex(i)
+            local resourceKeepId = GetResourceKeepForKeep(parentKeepId, iKeepResourceType)
+            -- GetResourceKeepForKeep(integer parentKeepId, integer resourceType)
+            --     Returns: integer keepId 
+     
+            if resourceKeepId == _keepId then
+                return parentKeepId
+            end
+        end
+    end
