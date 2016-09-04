@@ -131,7 +131,7 @@ function CyrodiilAction:updateView()
   if table.getn(self.battles) == 0 then 
     TitleLabel:SetHidden(false)
   else
-    for i = 0, 2 do
+    for i = 0, 4 do
       if self.battles[i] ~= nil then
         local step = i
         local keepNameLabel = GetControl("KeepNameLabel" ..step)
@@ -154,6 +154,7 @@ end
 
 function CyrodiilAction:clearView()
 
+  --TODO : refacto
   TitleLabel:SetHidden(true)
   KeepNameLabel1:SetText("")
   KeepTexture1:SetTexture("")
@@ -166,7 +167,17 @@ function CyrodiilAction:clearView()
   KeepTexture2:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
   KeepAttackTexture2:SetHidden(true)
 
+  KeepNameLabel3:SetText("")
+  KeepTexture3:SetTexture("")
+  KeepTexture3:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
+  KeepAttackTexture3:SetHidden(true)
+  KeepDataLabel3:SetText("")
 
+  KeepNameLabel4:SetText("")
+  KeepTexture4:SetTexture("")
+  KeepTexture4:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
+  KeepAttackTexture4:SetHidden(true)
+  KeepDataLabel4:SetText("")
 end
 
 EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_ADD_ON_LOADED, CyrodiilAction.OnAddOnLoaded)
