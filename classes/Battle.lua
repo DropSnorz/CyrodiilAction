@@ -20,6 +20,8 @@ function CyrodiilAction.Battle.new(keepID)
 
     self.owner = GetKeepAlliance(self.keepID, CyrodiilAction.battleContext)
 
+    self.lastAttackTime = GetTimeStamp()
+
     self.siege = {}
     self:update()
 
@@ -33,6 +35,12 @@ function CyrodiilAction.Battle:update()
     self.siege[ALLIANCE_ALDMERI_DOMINION] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_ALDMERI_DOMINION)
     self.siege[ALLIANCE_DAGGERFALL_COVENANT] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_DAGGERFALL_COVENANT)
     self.siege[ALLIANCE_EBONHEART_PACT] = GetNumSieges(self.keepID, CyrodiilAction.battleContext, ALLIANCE_EBONHEART_PACT)
+    
+    if self.isKeepUnderAttack or self.siege[ALLIANCE_ALDMERI_DOMINION] > 0 or self.siege[ALLIANCE_DAGGERFALL_COVENANT] > 0 or self.siege[ALLIANCE_EBONHEART_PACT] > 0 then
+        self.lastAttackTime = GetTimeStamp()
+    end
+
+    self.points = self.siege[ALLIANCE_ALDMERI_DOMINION] + self.siege[ALLIANCE_DAGGERFALL_COVENANT] + self.siege[ALLIANCE_EBONHEART_PACT]
 
 end
 

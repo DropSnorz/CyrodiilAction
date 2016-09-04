@@ -23,6 +23,7 @@ CyrodiilAction.colors.white = ZO_ColorDef:New(.8, .8, .8, 1)
 CyrodiilAction.colors.yellow = ZO_ColorDef:New(.765, .667, .290, 1)
 
 CyrodiilAction.defaults = {}
+CyrodiilAction.defaults.timeBeforeBattleClear = 180
 CyrodiilAction.defaults.underAttack = "/esoui/art/mappins/ava_attackburst_64.dds"
 CyrodiilAction.defaults.transparentColor = colors.invisible
 CyrodiilAction.defaults.fontMain = GetString(SI_CYRHUD_FONT)

@@ -6,13 +6,21 @@ CyrodiilAction.name = "CyrodiilAction"
  
 function CyrodiilAction:Initialize()
 
+
+
 	EVENT_MANAGER:RegisterForEvent("event_keep", EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
   self.battleContext = BGQUERY_LOCAL
+  self.playerAlliance = GetUnitAlliance("player")
   CyrodiilActionWindowBG:SetAlpha(0.5)
+
+  EVENT_MANAGER:RegisterForUpdate("BattleCheck", 10000, function()
+       d("Check battles changes...")
+       self:processBattle()
+       self:updateView()
+  end)
 
   self:scanKeeps()
   self:updateView()
-
 
 
 end
@@ -35,20 +43,31 @@ function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, under
 
     if underAttack then
     	d("Keep under attack.")
-      self:ProcessNewBattle(keepID)
+      self:processNewBattle(keepID)
+      self:updateView()
+
     else
-      d("Keep safe.")
-      self:ProcessEndBattle(keepID)
+      --d("Keep safe.")
+      --self:ProcessEndBattle(keepID)
     end
 
 end
 
 CyrodiilAction.battles = {}
-function CyrodiilAction:ProcessNewBattle(keepID)
+function CyrodiilAction:processNewBattle(keepID)
 
+  local isKeepInBattles = false
+  for i=#self.battles,1,-1 do
+   local v = self.battles[i]
+   if v.keepID == keepID then
+     isKeepInBattles = true
+   end
+end
+
+if not isKeepInBattles then
   local battle = self.Battle.new(keepID)
   table.insert(self.battles, battle)
-  self:updateView()
+end
 
 end 
 
@@ -89,6 +108,21 @@ function CyrodiilAction:checkAdd(keepID)
   end
 end
 
+function CyrodiilAction:processBattle()
+
+  for i=#self.battles,1,-1 do
+    self.battles[i]:update()
+
+    d(GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime))
+    if GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime) >= CyrodiilAction.defaults.timeBeforeBattleClear then
+     table.remove(self.battles, i)
+    end
+  end
+
+  table.sort(self.battles, function(a,b) return a.points>b.points end)
+
+end
+
 
 function CyrodiilAction:updateView()
 
@@ -105,7 +139,7 @@ function CyrodiilAction:updateView()
         local keepTexture = GetControl("KeepTexture" .. step)
         local keepDataLabel = GetControl("KeepDataLabel" .. step)
 
-        keepNameLabel:SetText(zo_strformat(self.battles[i].keepName))
+        keepNameLabel:SetText(zo_strformat("<<C:1>>",self.battles[i].keepName))
         keepAttackTexture:SetHidden(not self.battles[i].isKeepUnderAttack)
         keepAttackTexture:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
 
