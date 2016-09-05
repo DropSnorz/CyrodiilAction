@@ -119,7 +119,7 @@ end
 
 
 function CyrodiilAction:updateView()
-
+   -- TODO refacto
   self:clearView()
 
   if table.getn(self.battles) == 0 then 
@@ -132,7 +132,10 @@ function CyrodiilAction:updateView()
         local keepNameLabel = GetControl("KeepNameLabel" ..step)
         local keepAttackTexture = GetControl("KeepAttackTexture" .. step)
         local keepTexture = GetControl("KeepTexture" .. step)
-        local keepDataLabel = GetControl("KeepDataLabel" .. step)
+        local keepDataSiegeAD = GetControl("KeepSiegeAD" .. step)
+        local keepDataSiegeDC = GetControl("KeepSiegeDC" .. step)
+        local keepDataSiegeEP = GetControl("KeepSiegeEP" .. step)
+
 
         if self.battles[i]:getActionType() == CyrodiilAction.ACTION_ATTACK then
           actionTypeLabel:SetText("A")
@@ -147,7 +150,13 @@ function CyrodiilAction:updateView()
         keepTexture:SetTexture(self.battles[i]:GetKeepIcon())
         keepTexture:SetColor(CyrodiilAction.defaults.alliance[self.battles[i].owner].color:UnpackRGBA())
 
-        keepDataLabel:SetText(self.battles[i].siege[ALLIANCE_DAGGERFALL_COVENANT].. " "..self.battles[i].siege[ALLIANCE_ALDMERI_DOMINION].." " ..self.battles[i].siege[ALLIANCE_EBONHEART_PACT])
+        keepDataSiegeAD:SetText(self.battles[i].siege[ALLIANCE_ALDMERI_DOMINION])
+        keepDataSiegeAD:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
+        keepDataSiegeDC:SetText(self.battles[i].siege[ALLIANCE_DAGGERFALL_COVENANT])
+        keepDataSiegeDC:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].color:UnpackRGBA())
+        keepDataSiegeEP:SetText(self.battles[i].siege[ALLIANCE_EBONHEART_PACT])
+        keepDataSiegeEP:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].color:UnpackRGBA())
+
       end
     end 
   end
@@ -155,30 +164,28 @@ end
 
 function CyrodiilAction:clearView()
 
-  --TODO : refacto
   TitleLabel:SetHidden(true)
-  KeepNameLabel1:SetText("")
-  KeepTexture1:SetTexture("")
-  KeepTexture1:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
-  KeepAttackTexture1:SetHidden(true)
-  KeepDataLabel1:SetText("")
-  KeepNameLabel2:SetText("")
-  KeepDataLabel2:SetText("")
-  KeepTexture2:SetTexture("")
-  KeepTexture2:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
-  KeepAttackTexture2:SetHidden(true)
 
-  KeepNameLabel3:SetText("")
-  KeepTexture3:SetTexture("")
-  KeepTexture3:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
-  KeepAttackTexture3:SetHidden(true)
-  KeepDataLabel3:SetText("")
+  for i = 1, 4 do
 
-  KeepNameLabel4:SetText("")
-  KeepTexture4:SetTexture("")
-  KeepTexture4:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
-  KeepAttackTexture4:SetHidden(true)
-  KeepDataLabel4:SetText("")
+    local actionTypeLabel = GetControl("ActionType"..i)
+    local keepNameLabel = GetControl("KeepNameLabel" ..i)
+    local keepAttackTexture = GetControl("KeepAttackTexture" .. i)
+    local keepTexture = GetControl("KeepTexture" .. i)
+    local keepDataSiegeAD = GetControl("KeepSiegeAD" .. i)
+    local keepDataSiegeDC = GetControl("KeepSiegeDC" .. i)
+    local keepDataSiegeEP = GetControl("KeepSiegeEP" .. i)
+
+
+    actionTypeLabel:SetText("")
+    keepNameLabel:SetText("")
+    keepAttackTexture:SetHidden(true)
+    keepTexture:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())
+    keepDataSiegeAD:SetText("")
+    keepDataSiegeDC:SetText("")
+    keepDataSiegeEP:SetText("")
+
+  end
 end
 
 EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_ADD_ON_LOADED, CyrodiilAction.OnAddOnLoaded)

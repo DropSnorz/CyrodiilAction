@@ -28,12 +28,19 @@
         					<Dimensions y="50" x="50"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
    						</Texture>
-        				<Label name="KeepNameLabel1" text="????????" font="ZoFontBattleDisplay">
+        				<Label name="KeepNameLabel1" text="??????" font="ZoFontBattleDisplay">
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0"/>
        					</Label>
-       					<Label name="KeepDataLabel1" text="????????" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="300" offsetY="0" />
+       					<Label name="KeepSiegeAD1" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
        					</Label>
+       					<Label name="KeepSiegeDC1" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       					</Label>
+       					<Label name="KeepSiegeEP1" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
+       					</Label>
+
     				</Controls>
 				</Control>
 
@@ -56,8 +63,14 @@
         				<Label name="KeepNameLabel2" text="????????" font="ZoFontBattleDisplay">
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0" />
        					</Label>
-       					<Label name="KeepDataLabel2" text="????????" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="300" offsetY="0" />
+       					<Label name="KeepSiegeAD2" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
+       					</Label>
+       					<Label name="KeepSiegeDC2" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       					</Label>
+       					<Label name="KeepSiegeEP2" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
        					</Label>
     				</Controls>
 				</Control>
@@ -81,8 +94,14 @@
         				<Label name="KeepNameLabel3" text="????????" font="ZoFontBattleDisplay">
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0" />
        					</Label>
-       					<Label name="KeepDataLabel3" text="????????" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="300" offsetY="0" />
+       					<Label name="KeepSiegeAD3" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
+       					</Label>
+       					<Label name="KeepSiegeDC3" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       					</Label>
+       					<Label name="KeepSiegeEP3" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
        					</Label>
     				</Controls>
 				</Control>
@@ -106,8 +125,14 @@
         				<Label name="KeepNameLabel4" text="????????" font="ZoFontBattleDisplay">
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0" />
        					</Label>
-       					<Label name="KeepDataLabel4" text="????????" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="300" offsetY="0" />
+       					<Label name="KeepSiegeAD4" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
+       					</Label>
+       					<Label name="KeepSiegeDC4" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       					</Label>
+       					<Label name="KeepSiegeEP4" text="??" font="ZoFontBattleDisplay">
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
        					</Label>
     				</Controls>
 				</Control>

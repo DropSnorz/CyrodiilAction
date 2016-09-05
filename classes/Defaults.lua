@@ -29,7 +29,6 @@ CyrodiilAction.defaults = {}
 CyrodiilAction.defaults.timeBeforeBattleClear = 180
 CyrodiilAction.defaults.underAttack = "/esoui/art/mappins/ava_attackburst_64.dds"
 CyrodiilAction.defaults.transparentColor = colors.invisible
-CyrodiilAction.defaults.fontMain = GetString(SI_CYRHUD_FONT)
 CyrodiilAction.defaults.alliance = {}
 CyrodiilAction.defaults.alliance[ALLIANCE_NONE] = {}
 CyrodiilAction.defaults.alliance[ALLIANCE_NONE].color = colors.white
