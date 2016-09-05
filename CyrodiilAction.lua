@@ -128,7 +128,7 @@ function CyrodiilAction:updateView()
     for i = 0, 4 do
       if self.battles[i] ~= nil then
         local step = i
-        local actionTypeLabel = GetControl("ActionType"..i)
+        local actionTypeTexture = GetControl("ActionType"..i)
         local keepNameLabel = GetControl("KeepNameLabel" ..step)
         local keepAttackTexture = GetControl("KeepAttackTexture" .. step)
         local keepTexture = GetControl("KeepTexture" .. step)
@@ -138,10 +138,12 @@ function CyrodiilAction:updateView()
 
 
         if self.battles[i]:getActionType() == CyrodiilAction.ACTION_ATTACK then
-          actionTypeLabel:SetText("A")
+          actionTypeTexture:SetTexture(CyrodiilAction.defaults.icons.actionAttack)
         else
-          actionTypeLabel:SetText("D")
+          actionTypeTexture:SetTexture(CyrodiilAction.defaults.icons.actionDefend)
+
         end
+        actionTypeTexture:SetHidden(false)
 
         keepNameLabel:SetText(zo_strformat("<<C:1>>",self.battles[i].keepName))
         keepAttackTexture:SetHidden(not self.battles[i].isKeepUnderAttack)
@@ -168,7 +170,7 @@ function CyrodiilAction:clearView()
 
   for i = 1, 4 do
 
-    local actionTypeLabel = GetControl("ActionType"..i)
+    local actionTypeTexture = GetControl("ActionType"..i)
     local keepNameLabel = GetControl("KeepNameLabel" ..i)
     local keepAttackTexture = GetControl("KeepAttackTexture" .. i)
     local keepTexture = GetControl("KeepTexture" .. i)
@@ -177,7 +179,7 @@ function CyrodiilAction:clearView()
     local keepDataSiegeEP = GetControl("KeepSiegeEP" .. i)
 
 
-    actionTypeLabel:SetText("")
+    actionTypeTexture:SetHidden(true)
     keepNameLabel:SetText("")
     keepAttackTexture:SetHidden(true)
     keepTexture:SetColor(CyrodiilAction.colors.invisible:UnpackRGBA())

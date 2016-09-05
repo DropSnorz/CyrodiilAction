@@ -17,19 +17,20 @@
     				<Anchor point="TOPLEFT" offsetY="10" />
 
     				<Controls>
-    					<Label name="ActionType1" text="?" font="ZoFontGame">
+    					<Texture name="ActionType1">
+    						<Dimensions y="30" x="30"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-       					</Label>
+       					</Texture>
        					<Texture name="KeepAttackTexture1" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture1">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel1" text="??????" font="ZoFontBattleDisplay">
-        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0"/>
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0"/>
        					</Label>
        					<Label name="KeepSiegeAD1" text="??" font="ZoFontBattleDisplay">
        						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
@@ -49,19 +50,20 @@
     				<Anchor point="TOPLEFT" offsetY="50" />
 
     				<Controls>
-    					<Label name="ActionType2" text="?" font="ZoFontGame">
+    					<Texture name="ActionType2">
+    						<Dimensions y="30" x="30"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-       					</Label>
+       					</Texture>
        					<Texture name="KeepAttackTexture2" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture2">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel2" text="????????" font="ZoFontBattleDisplay">
-        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0" />
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeAD2" text="??" font="ZoFontBattleDisplay">
        						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
@@ -80,19 +82,20 @@
     				<Anchor point="TOPLEFT" offsetY="90" />
 
     				<Controls>
-    					<Label name="ActionType3" text="?" font="ZoFontGame">
+    					<Texture name="ActionType3">
+    						<Dimensions y="30" x="30"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-       					</Label>
+       					</Texture>
        					<Texture name="KeepAttackTexture3" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture3">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel3" text="????????" font="ZoFontBattleDisplay">
-        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0" />
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeAD3" text="??" font="ZoFontBattleDisplay">
        						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
@@ -111,19 +114,20 @@
     				<Anchor point="TOPLEFT" offsetY="130" />
 
     				<Controls>
-    					<Label name="ActionType4" text="?" font="ZoFontGame">
+    					<Texture name="ActionType4">
+    						<Dimensions y="30" x="30"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-       					</Label>
+       					</Texture>
        					<Texture name="KeepAttackTexture4" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture4">
         					<Dimensions y="50" x="50"/>
-       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="20" offsetY="-10" />
+       						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel4" text="????????" font="ZoFontBattleDisplay">
-        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="70" offsetY="0" />
+        					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeAD4" text="??" font="ZoFontBattleDisplay">
        						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
