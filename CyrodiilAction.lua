@@ -7,22 +7,47 @@ CyrodiilAction.name = "CyrodiilAction"
 function CyrodiilAction:Initialize()
 
 
+  CyrodiilAction:setupUI()
 
-	EVENT_MANAGER:RegisterForEvent("event_keep", EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
-  self.battleContext = BGQUERY_LOCAL
-  self.playerAlliance = GetUnitAlliance("player")
-  CyrodiilActionWindowBG:SetAlpha(0.5)
-
-  EVENT_MANAGER:RegisterForUpdate("BattleCheck", 10000, function()
-       d("Check battles changes...")
-       self:processBattle()
-       self:updateView()
-  end)
-
-  self:scanKeeps()
-  self:updateView()
+  EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_PLAYER_ACTIVATED, self.OnPlayerZoneChanged)
 
 
+end
+
+
+function CyrodiilAction.OnPlayerZoneChanged(_, initial)
+
+    local self = CyrodiilAction
+    self:setupUI()
+
+end
+
+
+
+function CyrodiilAction:setupUI()
+
+    d("zone changed")
+    if IsPlayerInAvAWorld() then 
+    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
+    self.battleContext = BGQUERY_LOCAL
+    self.playerAlliance = GetUnitAlliance("player")
+    CyrodiilActionWindowBG:SetAlpha(0.5)
+
+    EVENT_MANAGER:RegisterForUpdate("BattleCheckUpdate", 10000, function()
+         d("Check battles changes...")
+         self:processBattle()
+         self:updateView()
+    end)
+
+    self:scanKeeps()
+    self:updateView()
+    CyrodiilActionWindow:SetHidden(false)
+  else
+    CyrodiilActionWindow:SetHidden(true)
+    EVENT_MANAGER:UnregisterForEvent("YourAddonName", EVENT_KEEP_UNDER_ATTACK_CHANGED)
+    EVENT_MANAGER:UnregisterForUpdate("BattleCheckUpdate")
+    self:battles = {}
+  end
 end
 
 function CyrodiilAction.OnAddOnLoaded(event, addonName)
