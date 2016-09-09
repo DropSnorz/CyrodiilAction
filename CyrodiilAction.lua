@@ -2,12 +2,13 @@
 
 CyrodiilAction = {} 
 CyrodiilAction.name = "CyrodiilAction"
+CyrodiilAction.isWindowClosed = false
 
  
 function CyrodiilAction:Initialize()
 
 
-  CyrodiilAction:setupUI()
+  --CyrodiilAction:setupUI()
 
   EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_PLAYER_ACTIVATED, self.OnPlayerZoneChanged)
 
@@ -27,7 +28,7 @@ end
 function CyrodiilAction:setupUI()
 
     d("zone changed")
-    if IsPlayerInAvAWorld() then 
+    if IsPlayerInAvAWorld() and not self.isWindowClosed then 
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
     self.battleContext = BGQUERY_LOCAL
     self.playerAlliance = GetUnitAlliance("player")
@@ -46,9 +47,18 @@ function CyrodiilAction:setupUI()
     CyrodiilActionWindow:SetHidden(true)
     EVENT_MANAGER:UnregisterForEvent("YourAddonName", EVENT_KEEP_UNDER_ATTACK_CHANGED)
     EVENT_MANAGER:UnregisterForUpdate("BattleCheckUpdate")
-    self:battles = {}
+    self.battles = {}
   end
 end
+
+function CyrodiilAction.CloseWindow()
+
+  self = CyrodiilAction
+  self.isWindowClosed = true
+  self:setupUI()
+
+end
+
 
 function CyrodiilAction.OnAddOnLoaded(event, addonName)
   -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
@@ -133,7 +143,10 @@ function CyrodiilAction:processBattle()
     self.battles[i]:update()
 
     d(GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime))
-    if GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime) >= CyrodiilAction.defaults.timeBeforeBattleClear then
+    local battleTime = GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime)
+
+    if battleTime >= CyrodiilAction.defaults.timeBeforeBattleClear or 
+     ( self.battles[i].keepType == KEEPTYPE_RESOURCE and battleTime >= CyrodiilAction.defaults.timeBeforeResourceBattleClear ) then
      table.remove(self.battles, i)
     end
   end

@@ -7,6 +7,21 @@
  	
             <Controls>
                 <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop" />
+
+                <Button name="$(parent)_CloseButton">
+          			<Anchor point="TOPRIGHT" />
+         			 <Dimensions x="15" y="15" />
+				        <Textures name="$(parent)_Texture" normal="/esoUI/art/buttons/decline_up.dds"
+						 pressed="/esoUI/art/buttons/decline_down.dds"
+						 mouseOver="/esoUI/art/buttons/decline_mouseover.dds"
+						 disabled="/esoUI/art/buttons/decline_disabled.dds">
+				          <AnchorFill />
+				        </Textures>
+				      <OnClicked>
+				        CyrodiilAction.CloseWindow()
+				      </OnClicked>
+				    </Button>
+
                 <Label name="TitleLabel" text="There is no action in Cyrodiil" font="ZoFontGame" hidden="true">
             			<Anchor point="TOP" offsetY="10" />
 
@@ -33,13 +48,13 @@
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0"/>
        					</Label>
        					<Label name="KeepSiegeAD1" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="320" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeDC1" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="345" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeEP1" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="370" offsetY="0" />
        					</Label>
 
     				</Controls>
@@ -66,13 +81,13 @@
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeAD2" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="320" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeDC2" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="345" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeEP2" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="370" offsetY="0" />
        					</Label>
     				</Controls>
 				</Control>
@@ -98,13 +113,13 @@
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeAD3" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="320" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeDC3" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="345" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeEP3" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="370" offsetY="0" />
        					</Label>
     				</Controls>
 				</Control>
@@ -130,13 +145,13 @@
         					<Anchor point="TOPLEFT" object="$(parent)" offsetX="80" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeAD4" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="340" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="320" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeDC4" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="360" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="345" offsetY="0" />
        					</Label>
        					<Label name="KeepSiegeEP4" text="??" font="ZoFontBattleDisplay">
-       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="380" offsetY="0" />
+       						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="370" offsetY="0" />
        					</Label>
     				</Controls>
 				</Control>

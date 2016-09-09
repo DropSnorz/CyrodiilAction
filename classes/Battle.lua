@@ -13,6 +13,7 @@ local shortenKeepName = function(str)
     --FR
         :gsub("avant.poste d[eu] ", "")
         :gsub("la bastille d[eu]s? ", "")
+        :gsub("de la bastille", "")
         :gsub("fort de la ", "")
         :gsub("du château ", "")
         :gsub("du fort ", "")
