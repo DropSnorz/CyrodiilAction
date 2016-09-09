@@ -1,5 +1,5 @@
 <GuiXml>
-	<Font name="ZoFontBattleDisplay" font="$(MEDIUM_FONT)|20|soft-shadow-thick" />
+	<Font name="ZoFontBattleDisplay" font="$(MEDIUM_FONT)|18|soft-shadow-thick" />
     <Controls>
         <TopLevelControl name="CyrodiilActionWindow" mouseEnabled="true" movable="true" clampedToScreen="false">
             <Dimensions x="400" y="170" />
@@ -33,15 +33,15 @@
 
     				<Controls>
     					<Texture name="ActionType1">
-    						<Dimensions y="30" x="30"/>
+    						<Dimensions y="25" x="25"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Texture>
        					<Texture name="KeepAttackTexture1" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture1">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel1" text="??????" font="ZoFontBattleDisplay">
@@ -66,15 +66,15 @@
 
     				<Controls>
     					<Texture name="ActionType2">
-    						<Dimensions y="30" x="30"/>
+    						<Dimensions y="25" x="25"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Texture>
        					<Texture name="KeepAttackTexture2" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture2">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel2" text="????????" font="ZoFontBattleDisplay">
@@ -98,15 +98,15 @@
 
     				<Controls>
     					<Texture name="ActionType3">
-    						<Dimensions y="30" x="30"/>
+    						<Dimensions y="25" x="25"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Texture>
        					<Texture name="KeepAttackTexture3" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture3">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel3" text="????????" font="ZoFontBattleDisplay">
@@ -130,15 +130,15 @@
 
     				<Controls>
     					<Texture name="ActionType4">
-    						<Dimensions y="30" x="30"/>
+    						<Dimensions y="25" x="25"/>
     						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
        					</Texture>
        					<Texture name="KeepAttackTexture4" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
        					<Texture name="KeepTexture4">
-        					<Dimensions y="50" x="50"/>
+        					<Dimensions y="40" x="40"/>
        						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
    						</Texture>
         				<Label name="KeepNameLabel4" text="????????" font="ZoFontBattleDisplay">
