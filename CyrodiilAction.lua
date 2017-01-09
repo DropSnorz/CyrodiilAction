@@ -1,6 +1,7 @@
 
 
 CyrodiilAction = {} 
+CyrodiilAction.notifications = {}
 CyrodiilAction.name = "CyrodiilAction"
 CyrodiilAction.isWindowClosed = false
 
@@ -24,7 +25,6 @@ function CyrodiilAction.OnPlayerZoneChanged(_, initial)
 end
 
 
-
 function CyrodiilAction:setupUI()
 
     d("zone changed")
@@ -39,6 +39,9 @@ function CyrodiilAction:setupUI()
          self:processBattle()
          self:updateView()
     end)
+
+    EVENT_MANAGER:RegisterForUpdate("NotificationsUpdate", 5000, function() 
+      self:processNotificationsUpdate() end)
 
     self:scanKeeps()
     self:updateView()
@@ -80,10 +83,6 @@ function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, under
     	d("Keep under attack.")
       self:processNewBattle(keepID)
       self:updateView()
-
-    else
-      --d("Keep safe.")
-      --self:ProcessEndBattle(keepID)
     end
 
 end
@@ -102,6 +101,9 @@ end
 if not isKeepInBattles then
   local battle = self.Battle.new(keepID)
   table.insert(self.battles, battle)
+  local notificationText = "New battle at |t32:32:" .. battle:GetKeepIcon() .."|t  ".. zo_strformat("<<C:1>>",GetKeepName(keepID))
+  table.insert(self.notifications, notificationText)
+
 end
 
 end 
@@ -153,6 +155,21 @@ function CyrodiilAction:processBattle()
 
   table.sort(self.battles, function(a,b) return a.points>b.points end)
 
+end
+
+function CyrodiilAction:processNotificationsUpdate()
+
+  if table.getn(self.notifications) ~= 0 then
+
+    NotificationLabel:SetText(self.notifications[1])
+    NotificationLabel:SetHidden(false)
+    table.remove(self.notifications, 1)
+
+  else
+
+    NotificationLabel:SetHidden(true)
+
+  end
 end
 
 
