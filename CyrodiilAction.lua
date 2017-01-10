@@ -28,7 +28,7 @@ end
 function CyrodiilAction:setupUI()
 
     d("zone changed")
-    if IsPlayerInAvAWorld() and not self.isWindowClosed then 
+  if IsPlayerInAvAWorld() and not self.isWindowClosed then 
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
     self.battleContext = BGQUERY_LOCAL
     self.playerAlliance = GetUnitAlliance("player")
@@ -50,6 +50,7 @@ function CyrodiilAction:setupUI()
     CyrodiilActionWindow:SetHidden(true)
     EVENT_MANAGER:UnregisterForEvent("YourAddonName", EVENT_KEEP_UNDER_ATTACK_CHANGED)
     EVENT_MANAGER:UnregisterForUpdate("BattleCheckUpdate")
+    EVENT_MANAGER:UnregisterForUpdate("NotificationsUpdate")
     self.battles = {}
   end
 end
@@ -87,6 +88,11 @@ function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, under
 
 end
 
+function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, owningAlliance, oldAlliance)
+  return;
+
+end
+
 CyrodiilAction.battles = {}
 function CyrodiilAction:processNewBattle(keepID)
 
@@ -101,8 +107,10 @@ end
 if not isKeepInBattles then
   local battle = self.Battle.new(keepID)
   table.insert(self.battles, battle)
+
+
   local notificationText = "New battle at |t32:32:" .. battle:GetKeepIcon() .."|t  ".. zo_strformat("<<C:1>>",GetKeepName(keepID))
-  table.insert(self.notifications, notificationText)
+  self:processNotification(notificationText)
 
 end
 
@@ -157,13 +165,34 @@ function CyrodiilAction:processBattle()
 
 end
 
+function CyrodiilAction:processNotification(notificationText)
+
+  if CyrodiilAction.NotificationManager.getSize() == 0 then
+
+    CyrodiilAction.NotificationManager.push(notificationText)
+    self:processNotificationsUpdate()
+
+    CyrodiilAction.NotificationManager.freeze = 1
+
+  else
+
+    CyrodiilAction.NotificationManager.push(notificationText)
+
+  end
+end
+
+
+
 function CyrodiilAction:processNotificationsUpdate()
 
-  if table.getn(self.notifications) ~= 0 then
+  if CyrodiilAction.NotificationManager.getSize() ~= 0 then
 
-    NotificationLabel:SetText(self.notifications[1])
-    NotificationLabel:SetHidden(false)
-    table.remove(self.notifications, 1)
+    if CyrodiilAction.NotificationManager.isReady() then
+
+      notification = CyrodiilAction.NotificationManager.next()
+      NotificationLabel:SetText(notification)
+      NotificationLabel:SetHidden(false)
+    end
 
   else
 
@@ -174,6 +203,8 @@ end
 
 
 function CyrodiilAction:updateView()
+
+  d("TEST NM" .. CyrodiilAction.NotificationManager.getSize())
    -- TODO refacto
   self:clearView()
 
