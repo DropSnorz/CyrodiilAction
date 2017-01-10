@@ -7,3 +7,4 @@ CyrodiilAction.lua
 classes/Defaults.lua
 classes/Battle.lua
 classes/NotificationManager.lua
+classes/Utils.lua

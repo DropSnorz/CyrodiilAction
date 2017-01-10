@@ -30,6 +30,8 @@ function CyrodiilAction:setupUI()
     d("zone changed")
   if IsPlayerInAvAWorld() and not self.isWindowClosed then 
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
+    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_ALLIANCE_OWNER_CHANGED , self.OnKeepOwnerChanged)
+
     self.battleContext = BGQUERY_LOCAL
     self.playerAlliance = GetUnitAlliance("player")
     CyrodiilActionWindowBG:SetAlpha(0.5)
@@ -89,7 +91,10 @@ function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, under
 end
 
 function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, owningAlliance, oldAlliance)
-  return;
+  
+  local self = CyrodiilAction
+  local notificationText = "|t32:32:"..CyrodiilAction.Utils.getKeepIcon(keepID).."|t ".. zo_strformat("<<C:1>>",GetKeepName(keepID)) .." taken by "..zo_strformat("<<C:1>>", GetAllianceName(owningAlliance))
+  self:processNotification(notificationText)
 
 end
 
