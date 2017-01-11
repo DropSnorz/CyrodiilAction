@@ -31,9 +31,10 @@ function CyrodiilAction:setupUI()
   if IsPlayerInAvAWorld() and not self.isWindowClosed then 
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_ALLIANCE_OWNER_CHANGED , self.OnKeepOwnerChanged)
-
+    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_CAMPAIGN_SCORE_DATA_CHANGED, self.OnWarScoreChanged)
     self.battleContext = BGQUERY_LOCAL
     self.playerAlliance = GetUnitAlliance("player")
+    self.campaignId = GetCurrentCampaignId()
     CyrodiilActionWindowBG:SetAlpha(0.5)
 
     EVENT_MANAGER:RegisterForUpdate("BattleCheckUpdate", 10000, function()
@@ -97,6 +98,32 @@ function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, ownin
   self:processNotification(notificationText)
 
 end
+
+function CyrodiilAction.OnWarScoreChanged(eventCode)
+  local self = CyrodiilAction
+
+  notificationText="War score updated !"
+  self:processNotification(notificationText)
+
+  local aldmeriScore = GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION)
+  local daggerfallScore = GetCampaignAllianceScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT)
+  local ebonheartScore = GetCampaignAllianceScore(self.campaignId, ALLIANCE_EBONHEART_PACT)
+
+  local aldmeriPotentialScore = GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION)
+  local daggerfallPotentialScore = GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT)
+  local ebonheartPotentialScore = GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_EBONHEART_PACT)
+
+  notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].pin.."|t " .. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_ALDMERI_DOMINION)) .. ": " .. aldmeriScore .. " (+" ..aldmeriPotentialScore .. ")"
+  self:processNotification(notificationText)
+
+  notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].pin.."|t ".. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_DAGGERFALL_COVENANT)) .. ": " ..  daggerfallScore .. " (+" ..daggerfallPotentialScore .. ")"
+  self:processNotification(notificationText)
+
+  notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].pin.."|t ".. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_EBONHEART_PACT)) .. ": " ..  ebonheartScore .. " (+" ..ebonheartPotentialScore .. ")"
+  self:processNotification(notificationText)
+
+end
+
 
 CyrodiilAction.battles = {}
 function CyrodiilAction:processNewBattle(keepID)

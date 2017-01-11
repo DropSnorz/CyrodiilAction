@@ -167,7 +167,7 @@
 
     				<Controls>
     					<Label name="NotificationLabel" text="???" font="ZoFontGame"> 
-    						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="10" offsetY="0" />
+    						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="1" offsetY="0" />
     					</Label>
     				</Controls>
     			</Control>
