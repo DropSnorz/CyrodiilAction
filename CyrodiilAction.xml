@@ -2,7 +2,7 @@
 	<Font name="ZoFontBattleDisplay" font="$(MEDIUM_FONT)|18|soft-shadow-thick" />
     <Controls>
         <TopLevelControl name="CyrodiilActionWindow" mouseEnabled="true" movable="true" clampedToScreen="false">
-            <Dimensions x="400" y="170" />
+            <Dimensions x="400" y="190" />
             <Anchor point="TOPLEFT" />
  	
             <Controls>
@@ -156,11 +156,21 @@
     				</Controls>
 				</Control>
 
-				<Texture name="HDivider" textureFile="EsoUI/Art/Miscellaneous/horizontalDivider.dds">
-        			<Dimensions y="4"/>
-       				<Anchor point="TOPLEFT" object="$(parent)" offsetY="380" />
+				<Texture name="HDivider" textureFile="EsoUI/Art/mail/mail_divider.dds">
+        			<Dimensions y="4" x="400"/>
+       				<Anchor point="TOPLEFT" object="$(parent)" offsetY="160" />
    				</Texture>
 
+   				<Control name="Notification">
+    				<Dimensions x="100" y="40" />
+    				<Anchor point="TOPLEFT" offsetY="170" />
+
+    				<Controls>
+    					<Label name="NotificationLabel" text="???" font="ZoFontGame"> 
+    						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="1" offsetY="0" />
+    					</Label>
+    				</Controls>
+    			</Control>
             </Controls>
 
 

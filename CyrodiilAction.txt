@@ -4,5 +4,7 @@
 CyrodiilAction.xml
 
 CyrodiilAction.lua
+classes/Utils.lua
 classes/Defaults.lua
 classes/Battle.lua
+classes/NotificationManager.lua
