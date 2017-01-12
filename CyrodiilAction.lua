@@ -94,7 +94,7 @@ end
 function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, owningAlliance, oldAlliance)
   
   local self = CyrodiilAction
-  local notificationText = "|t32:32:"..CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, battlegroundContext).."|t ".. zo_strformat("<<C:1>>",GetKeepName(keepID)) .." captured ".. "|t32:32:"..CyrodiilAction.defaults.alliance[oldAlliance].pin.."|t > " .. "|t32:32:"..CyrodiilAction.defaults.alliance[owningAlliance].pin.."|t "
+  local notificationText = "|t32:32:"..CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, battlegroundContext).."|t ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID))) .." captured ".. "|t32:32:"..CyrodiilAction.defaults.alliance[oldAlliance].pin.."|t > " .. "|t32:32:"..CyrodiilAction.defaults.alliance[owningAlliance].pin.."|t "
   self:processNotification(notificationText)
 
 end
@@ -141,7 +141,7 @@ if not isKeepInBattles then
   table.insert(self.battles, battle)
 
 
-  local notificationText = "|t32:32:" .. CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, self.battleContext) .."|t New battle at  ".. zo_strformat("<<C:1>>",GetKeepName(keepID))
+  local notificationText = "|t32:32:" .. CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, self.battleContext) .."|t New battle at  ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID)))
   self:processNotification(notificationText)
 
 end
@@ -220,10 +220,8 @@ function CyrodiilAction:processNotificationsUpdate()
   local animation = ZO_AlphaAnimation:New(NotificationLabel)
   NotificationLabel:SetHidden(false)
 
-
-  if CyrodiilAction.NotificationManager.getSize() ~= 0 then
-
-    if CyrodiilAction.NotificationManager.isReady() then
+  if CyrodiilAction.NotificationManager.isReady() then
+    if CyrodiilAction.NotificationManager.getSize() ~= 0 then
 
       if NotificationLabel:GetAlpha() > 0.2 then
         animation:FadeOut(0, 300, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
@@ -231,13 +229,12 @@ function CyrodiilAction:processNotificationsUpdate()
       notification = CyrodiilAction.NotificationManager.next()
       NotificationLabel:SetText(notification)
       animation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
-    end
-
   else
 
     animation:FadeOut(0, 500, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
 
   end
+end
 end
 
 

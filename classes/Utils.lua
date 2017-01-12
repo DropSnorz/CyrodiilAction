@@ -5,6 +5,20 @@ CyrodiilAction.NotificationManager = CyrodiilAction.NotificationManager or {}
 CyrodiilAction.Utils = {}
 
 
+
+function CyrodiilAction.Utils:shortenKeepName(str)
+
+ return str:gsub(",..$", ""):gsub("%^.d$", "")
+    --FR
+        :gsub("avant.poste d[eu] ", "")
+        :gsub("la bastille d[eu]s? ", "")
+        :gsub("de la bastille", "")
+        :gsub("fort de la ", "")
+        :gsub("du château ", "")
+        :gsub("du fort ", "")
+
+end
+
 function CyrodiilAction.Utils.getKeepIcon(keepId)
 
 	local keepType = GetKeepType(keepId)

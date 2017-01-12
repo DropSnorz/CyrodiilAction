@@ -8,17 +8,6 @@ CyrodiilAction.Battle.type = "Battle"
 
 
 
-local shortenKeepName = function(str)
-    return str:gsub(",..$", ""):gsub("%^.d$", "")
-    --FR
-        :gsub("avant.poste d[eu] ", "")
-        :gsub("la bastille d[eu]s? ", "")
-        :gsub("de la bastille", "")
-        :gsub("fort de la ", "")
-        :gsub("du château ", "")
-        :gsub("du fort ", "")
-end
-
 ----------------------------------------------
 -- Creation
 ----------------------------------------------
@@ -27,7 +16,7 @@ function CyrodiilAction.Battle.new(keepID)
     self.startBattle = GetTimeStamp()
     self.endBattle = nil
     self.keepID = keepID
-    self.keepName = shortenKeepName(GetKeepName(keepID))
+    self.keepName = CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID))
     self.keepType = GetKeepType(keepID)
 
     self.owner = GetKeepAlliance(self.keepID, CyrodiilAction.battleContext)
