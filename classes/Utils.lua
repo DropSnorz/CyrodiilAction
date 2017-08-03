@@ -36,7 +36,6 @@ end
 function CyrodiilAction.Utils.getKeepIconByBattleContext(keepId, battleContext)
 
 	local keepType = GetKeepType(keepId)
-	d("DBG "..battleContext)
 	local alliance = GetKeepAlliance(keepId, battleContext)
 	
 	if keepType == KEEPTYPE_RESOURCE then

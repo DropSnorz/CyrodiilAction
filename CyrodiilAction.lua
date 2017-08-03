@@ -27,7 +27,7 @@ end
 
 function CyrodiilAction:setupUI()
 
-    d("zone changed")
+  d("zone changed")
   if IsPlayerInAvAWorld() and not self.isWindowClosed then 
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_ALLIANCE_OWNER_CHANGED , self.OnKeepOwnerChanged)
@@ -243,6 +243,14 @@ function CyrodiilAction:updateView()
    -- TODO refacto
   self:clearView()
 
+  local aldmeriPoints = GetControl("AldmeriPoints");
+    aldmeriPoints:SetText(GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION))
+  local daggerfallPoints = GetControl("DaggerfallPoints");
+    daggerfallPoints:SetText(GetCampaignAllianceScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT))
+  local ebonheartPoints = GetControl("EbonheartPoints");
+    ebonheartPoints:SetText(GetCampaignAllianceScore(self.campaignId, ALLIANCE_EBONHEART_PACT))
+
+
   if table.getn(self.battles) == 0 then 
     TitleLabel:SetHidden(false)
   else
@@ -320,23 +328,23 @@ function GetParentKeep(_keepId)
         
         -- If the resourceType is none then I'm guessing that makes it the main (parent) keep? --
         -- so do this to check if its a main (parent) keep under attack --
-        if iKeepResourceType ==  RESOURCETYPE_NONE then
-            return _keepId
-        end
-        
-        -- Otherwise it is a resource keep so we need to find out which main (parent) --
-        -- keep it belongs too --
-        
-        local iNumKeeps = GetNumKeeps()
-        
-        for i = 1, iNumKeeps do
-            local parentKeepId = GetKeepKeysByIndex(i)
-            local resourceKeepId = GetResourceKeepForKeep(parentKeepId, iKeepResourceType)
-            -- GetResourceKeepForKeep(integer parentKeepId, integer resourceType)
-            --     Returns: integer keepId 
-     
-            if resourceKeepId == _keepId then
-                return parentKeepId
-            end
+    if iKeepResourceType ==  RESOURCETYPE_NONE then
+        return _keepId
+    end
+    
+    -- Otherwise it is a resource keep so we need to find out which main (parent) --
+    -- keep it belongs too --
+    
+    local iNumKeeps = GetNumKeeps()
+    
+    for i = 1, iNumKeeps do
+        local parentKeepId = GetKeepKeysByIndex(i)
+        local resourceKeepId = GetResourceKeepForKeep(parentKeepId, iKeepResourceType)
+        -- GetResourceKeepForKeep(integer parentKeepId, integer resourceType)
+        --     Returns: integer keepId 
+ 
+        if resourceKeepId == _keepId then
+            return parentKeepId
         end
     end
+end
