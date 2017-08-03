@@ -46,6 +46,13 @@ function CyrodiilAction:setupUI()
     EVENT_MANAGER:RegisterForUpdate("NotificationsUpdate", 5000, function() 
       self:processNotificationsUpdate() end)
 
+
+    notificationAnimation, notificationAnimationTimeline = CreateSimpleAnimation(ANIMATION_TEXTURE, GetControl("NotificationTexture"))
+    notificationAnimation:SetImageData(4, 8)
+    notificationAnimation:SetFramerate(20)
+    notificationAnimationTimeline:SetPlaybackType(ANIMATION_PLAYBACK_LOOP, LOOP_INDEFINITELY)
+    notificationAnimationTimeline:PlayFromStart()
+
     self:scanKeeps()
     self:updateView()
     CyrodiilActionWindow:SetHidden(false)
@@ -218,6 +225,8 @@ end
 function CyrodiilAction:processNotificationsUpdate()
 
   local animation = ZO_AlphaAnimation:New(NotificationLabel)
+  local backgroundAnimation = ZO_AlphaAnimation:New(GetControl("NotificationTexture"))
+  backgroundAnimation:SetMinMaxAlpha(0,0.7)
   NotificationLabel:SetHidden(false)
 
   if CyrodiilAction.NotificationManager.isReady() then
@@ -225,13 +234,18 @@ function CyrodiilAction:processNotificationsUpdate()
 
       if NotificationLabel:GetAlpha() > 0.2 then
         animation:FadeOut(0, 300, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+        backgroundAnimation:FadeOut(0, 300, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+
       end
       notification = CyrodiilAction.NotificationManager.next()
       NotificationLabel:SetText(notification)
       animation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+      backgroundAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+
   else
 
     animation:FadeOut(0, 500, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+    backgroundAnimation:FadeOut(0, 500, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
 
   end
 end

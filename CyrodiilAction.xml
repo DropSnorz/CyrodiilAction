@@ -1,11 +1,13 @@
 <GuiXml>
 	<Font name="ZoFontBattleDisplay" font="$(MEDIUM_FONT)|18|soft-shadow-thick" />
     <Controls>
+
         <TopLevelControl name="CyrodiilActionWindow" mouseEnabled="true" movable="true" clampedToScreen="false">
             <Dimensions x="400" y="200" />
             <Anchor point="TOPLEFT" />
  	
             <Controls>
+
 
                 <Control name="PointsHeaderAldmeri">
                   <Dimensions x="400" y="40" />
@@ -213,10 +215,16 @@
    				</Texture>
 
    				<Control name="Notification">
-    				<Dimensions x="100" y="40" />
+    				<Dimensions x="400" y="70" />
     				<Anchor point="TOPLEFT" offsetY="176" />
 
     				<Controls>
+             
+               <Texture name="NotificationTexture" textureFile="esoUI/art/unitattributevisualizer/increasedpower_animatedhalo_32fr.dds" color="D91E18" alpha="0.7">
+                <Dimensions x="600" y="70" />
+                <Anchor point="TOPLEFT" offsetX="-100" offsetY="-20" />
+              </Texture>
+
     					<Label name="NotificationLabel" text="" font="ZoFontGame"> 
     						<Anchor point="TOPLEFT"  object="$(parent)" offsetX="1" offsetY="0" />
     					</Label>
@@ -226,5 +234,6 @@
 
 
         </TopLevelControl>
+
     </Controls>
 </GuiXml>
