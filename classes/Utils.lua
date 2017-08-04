@@ -50,7 +50,7 @@ end
 
 SLASH_COMMANDS["/notify"] = function (extra)
   
-  CyrodiilAction.NotificationManager.push("New notification !")
+  CyrodiilAction.NotificationManager.push({text="New notification !", type="test"})
 
 end
 

@@ -102,15 +102,27 @@ function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, ownin
   
   local self = CyrodiilAction
   local notificationText = "|t32:32:"..CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, battlegroundContext).."|t ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID))) .." captured ".. "|t32:32:"..CyrodiilAction.defaults.alliance[oldAlliance].pin.."|t > " .. "|t32:32:"..CyrodiilAction.defaults.alliance[owningAlliance].pin.."|t "
-  self:processNotification(notificationText)
+  local notificationType
+
+  if self.playerAlliance == owningAlliance then
+    notificationType = "success"
+  else
+    notificationType="danger"
+  end
+
+  local notification = {text= notificationText, type=notificationType};
+
+  self:processNotification(notification)
 
 end
 
 function CyrodiilAction.OnWarScoreChanged(eventCode)
   local self = CyrodiilAction
 
-  notificationText="War score updated !"
-  self:processNotification(notificationText)
+  local notificationText="War score updated !"
+  local notification = {text= notificationText, type="info"};
+
+  self:processNotification(notification)
 
   local aldmeriScore = GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION)
   local daggerfallScore = GetCampaignAllianceScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT)
@@ -121,13 +133,19 @@ function CyrodiilAction.OnWarScoreChanged(eventCode)
   local ebonheartPotentialScore = GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_EBONHEART_PACT)
 
   notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].pin.."|t " .. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_ALDMERI_DOMINION)) .. ": " .. aldmeriScore .. " (+" ..aldmeriPotentialScore .. ")"
-  self:processNotification(notificationText)
+  notification = {text= notificationText, type="info"};
+
+  self:processNotification(notification)
 
   notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].pin.."|t ".. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_DAGGERFALL_COVENANT)) .. ": " ..  daggerfallScore .. " (+" ..daggerfallPotentialScore .. ")"
-  self:processNotification(notificationText)
+  notification = {text= notificationText, type="info"};
+
+  self:processNotification(notification)
 
   notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].pin.."|t ".. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_EBONHEART_PACT)) .. ": " ..  ebonheartScore .. " (+" ..ebonheartPotentialScore .. ")"
-  self:processNotification(notificationText)
+  notification = {text=notificationText, type="ifno"};
+
+  self:processNotification(notification)
 
 end
 
@@ -149,7 +167,17 @@ if not isKeepInBattles then
 
 
   local notificationText = "|t32:32:" .. CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, self.battleContext) .."|t New battle at  ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID)))
-  self:processNotification(notificationText)
+  local notificationType
+
+  if battle:getActionType() == CyrodiilAction.ACTION_ATTACK then
+    notificationType = "info"
+  
+  else
+    notificationType = "danger"
+  end
+  notification = {text= notificationText, notificationType};
+
+  self:processNotification(notification)
 
 end
 
@@ -225,8 +253,9 @@ end
 function CyrodiilAction:processNotificationsUpdate()
 
   local animation = ZO_AlphaAnimation:New(NotificationLabel)
-  local backgroundAnimation = ZO_AlphaAnimation:New(GetControl("NotificationTexture"))
-  backgroundAnimation:SetMinMaxAlpha(0,0.7)
+  local notificationTexture = GetControl("NotificationTexture")
+  local backgroundAnimation = ZO_AlphaAnimation:New(notificationTexture)
+  backgroundAnimation:SetMinMaxAlpha(0,0.6)
   NotificationLabel:SetHidden(false)
 
   if CyrodiilAction.NotificationManager.isReady() then
@@ -238,7 +267,14 @@ function CyrodiilAction:processNotificationsUpdate()
 
       end
       notification = CyrodiilAction.NotificationManager.next()
-      NotificationLabel:SetText(notification)
+      NotificationLabel:SetText(notification.text)
+      if notification.type == "danger" then
+        notificationTexture:SetColor(ZO_ColorDef:New("D91E18"):UnpackRGB())
+      elseif notification.type == "success" then
+        notificationTexture:SetColor(ZO_ColorDef:New("00B16A"):UnpackRGB())
+      else
+        notificationTexture:SetColor(ZO_ColorDef:New("19B5FE"):UnpackRGB())
+    end
       animation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
       backgroundAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
 

@@ -220,7 +220,7 @@
 
     				<Controls>
              
-               <Texture name="NotificationTexture" textureFile="esoUI/art/unitattributevisualizer/increasedpower_animatedhalo_32fr.dds" color="D91E18" alpha="0.7">
+               <Texture name="NotificationTexture" textureFile="esoUI/art/unitattributevisualizer/increasedpower_animatedhalo_32fr.dds" color="D91E18" alpha="0">
                 <Dimensions x="600" y="70" />
                 <Anchor point="TOPLEFT" offsetX="-100" offsetY="-20" />
               </Texture>
