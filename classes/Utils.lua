@@ -1,4 +1,4 @@
-﻿
+
 
 CyrodiilAction = CyrodiilAction or {}
 CyrodiilAction.NotificationManager = CyrodiilAction.NotificationManager or {}
@@ -53,5 +53,16 @@ SLASH_COMMANDS["/notify"] = function (extra)
   CyrodiilAction.NotificationManager.push({text="New notification !", type="test"})
 
 end
+
+
+function CyrodiilAction.Utils.format_thousand(v)
+    local s = string.format("%d", math.floor(v))
+    local pos = string.len(s) % 3
+    local thousandSeparator = " "
+    if pos == 0 then pos = 3 end
+    return string.sub(s, 1, pos)
+        .. string.gsub(string.sub(s, pos+1), "(...)", thousandSeparator.."%1")
+end
+
 
 

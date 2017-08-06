@@ -25,7 +25,7 @@
 
                 <Control name="PointsHeaderDaggerfall">
                   <Dimensions x="400" y="40" />
-                  <Anchor point="TOPLEFT" offsetX="100" />
+                  <Anchor point="TOPLEFT" offsetX="90" />
                   <Controls>
                     <Texture name="DaggerfallFlag" textureFile="/esoui/art/guild/guildbanner_icon_daggerfall.dds">
                       <Dimensions y="25" x="25"/>
@@ -39,10 +39,11 @@
 
                 <Control name="PointsHeaderEbonheart">
                   <Dimensions x="400" y="40" />
-                  <Anchor point="TOPLEFT" offsetX="200" />
+                  <Anchor point="TOPLEFT" offsetX="180" />
                   <Controls>
                     <Texture name="EbonheartFlag" textureFile="/esoui/art/guild/guildbanner_icon_ebonheart.dds">
                       <Dimensions y="25" x="25"/>
+
                       <Anchor point="TOPLEFT" object="$(parent)" offsetX="5" offsetY="0" />
                     </Texture>
                     <Label name="EbonheartPoints" text="??? ???" font="ZoFontGame">

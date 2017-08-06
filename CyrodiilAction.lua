@@ -4,6 +4,7 @@ CyrodiilAction = {}
 CyrodiilAction.notifications = {}
 CyrodiilAction.name = "CyrodiilAction"
 CyrodiilAction.isWindowClosed = false
+CyrodiilAction.pointsDisplayRing = false
 
  
 function CyrodiilAction:Initialize()
@@ -44,7 +45,10 @@ function CyrodiilAction:setupUI()
     end)
 
     EVENT_MANAGER:RegisterForUpdate("NotificationsUpdate", 5000, function() 
-      self:processNotificationsUpdate() end)
+      self:processNotificationsUpdate() 
+      self:updatePointsDisplay()
+
+    end)
 
 
     notificationAnimation, notificationAnimationTimeline = CreateSimpleAnimation(ANIMATION_TEXTURE, GetControl("NotificationTexture"))
@@ -54,11 +58,12 @@ function CyrodiilAction:setupUI()
     notificationAnimationTimeline:PlayFromStart()
 
     self:scanKeeps()
+    self:updatePointsDisplay()
     self:updateView()
     CyrodiilActionWindow:SetHidden(false)
   else
     CyrodiilActionWindow:SetHidden(true)
-    EVENT_MANAGER:UnregisterForEvent("YourAddonName", EVENT_KEEP_UNDER_ATTACK_CHANGED)
+    EVENT_MANAGER:UnregisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED)
     EVENT_MANAGER:UnregisterForUpdate("BattleCheckUpdate")
     EVENT_MANAGER:UnregisterForUpdate("NotificationsUpdate")
     self.battles = {}
@@ -287,20 +292,52 @@ function CyrodiilAction:processNotificationsUpdate()
 end
 end
 
+function CyrodiilAction:updatePointsDisplay()
+
+local aldmeriPoints = GetControl("AldmeriPoints");
+local daggerfallPoints = GetControl("DaggerfallPoints");
+local ebonheartPoints = GetControl("EbonheartPoints");
+
+local aldmeriLabelAnimation = ZO_AlphaAnimation:New(aldmeriPoints)
+local daggerfallLabelAnimation = ZO_AlphaAnimation:New(daggerfallPoints)
+local ebonheartLabelAnimation = ZO_AlphaAnimation:New(ebonheartPoints)
+
+aldmeriLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+daggerfallLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+ebonheartLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+
+
+if self.pointsDisplayRing then
+
+    aldmeriPoints:SetText("+" .. GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION))
+    daggerfallPoints:SetText("+" ..GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT))
+    ebonheartPoints:SetText("+" ..GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_EBONHEART_PACT))
+
+    aldmeriPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
+    daggerfallPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].color:UnpackRGBA())
+    ebonheartPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].color:UnpackRGBA())
+
+else
+    aldmeriPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION)))
+    daggerfallPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT)))
+    ebonheartPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_EBONHEART_PACT)))
+
+    aldmeriPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+    daggerfallPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+    ebonheartPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+end
+
+self.pointsDisplayRing = not self.pointsDisplayRing
+
+end
+
 
 function CyrodiilAction:updateView()
 
    -- TODO refacto
   self:clearView()
 
-  local aldmeriPoints = GetControl("AldmeriPoints");
-    aldmeriPoints:SetText(GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION))
-  local daggerfallPoints = GetControl("DaggerfallPoints");
-    daggerfallPoints:SetText(GetCampaignAllianceScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT))
-  local ebonheartPoints = GetControl("EbonheartPoints");
-    ebonheartPoints:SetText(GetCampaignAllianceScore(self.campaignId, ALLIANCE_EBONHEART_PACT))
-
-
+  
   if table.getn(self.battles) == 0 then 
     TitleLabel:SetHidden(false)
   else
