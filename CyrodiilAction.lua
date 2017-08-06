@@ -50,6 +50,11 @@ function CyrodiilAction:setupUI()
 
     end)
 
+    EVENT_MANAGER:RegisterForUpdate("RefreshCycle", 1000, function()
+        self:refreshCampaignTime();
+    end)
+
+
 
     notificationAnimation, notificationAnimationTimeline = CreateSimpleAnimation(ANIMATION_TEXTURE, GetControl("NotificationTexture"))
     notificationAnimation:SetImageData(4, 8)
@@ -379,6 +384,14 @@ function CyrodiilAction:updateView()
     end 
   end
 end
+
+function CyrodiilAction:refreshCampaignTime()
+    local campaignTime = GetControl("CampaignTime");
+    local time = CyrodiilAction.Utils.format_time(GetSecondsUntilCampaignScoreReevaluation(self.campaignId));
+    campaignTime:SetText(time)
+end
+
+
 
 function CyrodiilAction:clearView()
 

@@ -52,6 +52,10 @@
                   </Controls>
                 </Control>
 
+                <Label name="CampaignTime" font="ZoFontGame" color="dbdbdb">
+                  <Anchor point="TOPLEFT" object="$(parent)" offsetX="320" />
+                </Label>
+
                 <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop" />
 
                 <Button name="$(parent)_CloseButton">

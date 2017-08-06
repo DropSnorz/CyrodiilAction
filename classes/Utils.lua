@@ -64,5 +64,17 @@ function CyrodiilAction.Utils.format_thousand(v)
         .. string.gsub(string.sub(s, pos+1), "(...)", thousandSeparator.."%1")
 end
 
+-- Converts seconds to minutes and seconds
+function CyrodiilAction.Utils.format_time(delta)
+    local sec = delta % 60
+    delta = (delta - sec) / 60
+    local min = delta % 60
+    local out = min .. "m"
+
+    out = out .. " " .. sec .. "s"
+    return out
+end
+
+
 
 
