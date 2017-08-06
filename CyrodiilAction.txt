@@ -1,8 +1,10 @@
 ## Title: CyrodiilAction
 ## APIVersion: 100010
+## AddOnVersion: 1
+## Version: 0.0.1
+## Author: Dropsnorz
 
 CyrodiilAction.xml
-
 CyrodiilAction.lua
 classes/Defaults.lua
 classes/Battle.lua
