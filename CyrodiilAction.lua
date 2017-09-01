@@ -4,6 +4,7 @@ CyrodiilAction.notifications = {}
 CyrodiilAction.name = "CyrodiilAction"
 CyrodiilAction.isWindowClosed = false
 CyrodiilAction.pointsDisplayRing = false
+CyrodiilAction.debug = false
 
 
 function CyrodiilAction:Initialize()
@@ -23,7 +24,7 @@ end
 
 function CyrodiilAction:setupUI()
 
-  d("zone changed")
+  CyrodiilAction.Logger.log("zone changed")
   if IsPlayerInAvAWorld() and not self.isWindowClosed then 
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
     EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_ALLIANCE_OWNER_CHANGED , self.OnKeepOwnerChanged)
@@ -34,7 +35,7 @@ function CyrodiilAction:setupUI()
     CyrodiilActionWindowBG:SetAlpha(0.5)
 
     EVENT_MANAGER:RegisterForUpdate("BattleCheckUpdate", 10000, function()
-     d("Check battles changes...")
+     CyrodiilAction.Logger.log("Check battles changes...")
      self:processBattle()
      self:updateView()
      end)
@@ -96,7 +97,7 @@ function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, under
   end
 
   if underAttack then
-   d("Keep under attack.")
+   CyrodiilAction.Logger.log("Keep under attack.")
    self:processNewBattle(keepID)
    self:updateView()
   end
@@ -216,7 +217,7 @@ function CyrodiilAction:processBattle()
   for i=#self.battles,1,-1 do
     self.battles[i]:update()
 
-    d(GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime))
+    CyrodiilAction.Logger.log(GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime))
     local battleTime = GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime)
 
     if battleTime >= CyrodiilAction.defaults.timeBeforeBattleClear or 
