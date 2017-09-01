@@ -1,6 +1,4 @@
-﻿
-
-CyrodiilAction = CyrodiilAction or {}
+﻿CyrodiilAction = CyrodiilAction or {}
 
 local AD = ALLIANCE_ALDMERI_DOMINION
 local DC = ALLIANCE_DAGGERFALL_COVENANT

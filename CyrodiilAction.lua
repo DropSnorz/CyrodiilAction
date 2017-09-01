@@ -1,27 +1,22 @@
-
-
-CyrodiilAction = {} 
+CyrodiilAction = {}
+CyrodiilAction.battles = {}
 CyrodiilAction.notifications = {}
 CyrodiilAction.name = "CyrodiilAction"
 CyrodiilAction.isWindowClosed = false
 CyrodiilAction.pointsDisplayRing = false
 
- 
+
 function CyrodiilAction:Initialize()
 
-
-  --CyrodiilAction:setupUI()
-
   EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_PLAYER_ACTIVATED, self.OnPlayerZoneChanged)
-
 
 end
 
 
 function CyrodiilAction.OnPlayerZoneChanged(_, initial)
 
-    local self = CyrodiilAction
-    self:setupUI()
+  local self = CyrodiilAction
+  self:setupUI()
 
 end
 
@@ -39,20 +34,20 @@ function CyrodiilAction:setupUI()
     CyrodiilActionWindowBG:SetAlpha(0.5)
 
     EVENT_MANAGER:RegisterForUpdate("BattleCheckUpdate", 10000, function()
-         d("Check battles changes...")
-         self:processBattle()
-         self:updateView()
-    end)
+     d("Check battles changes...")
+     self:processBattle()
+     self:updateView()
+     end)
 
     EVENT_MANAGER:RegisterForUpdate("NotificationsUpdate", 5000, function() 
       self:processNotificationsUpdate() 
       self:updatePointsDisplay()
 
-    end)
+      end)
 
     EVENT_MANAGER:RegisterForUpdate("RefreshCycle", 1000, function()
-        self:refreshCampaignTime();
-    end)
+      self:refreshCampaignTime();
+      end)
 
 
 
@@ -92,24 +87,23 @@ function CyrodiilAction.OnAddOnLoaded(event, addonName)
 end
 
 function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, underAttack)
-    local self = CyrodiilAction
-    self.battleContext = battlegroundContext
+  local self = CyrodiilAction
+  self.battleContext = battlegroundContext
 
-    --Optionally hide IC district battles
-    if GetKeepType(keepID) == KEEPTYPE_IMPERIAL_CITY_DISTRICT then
-            return;
-    end
+  --Optionally hide IC district battles
+  if GetKeepType(keepID) == KEEPTYPE_IMPERIAL_CITY_DISTRICT then
+    return;
+  end
 
-    if underAttack then
-    	d("Keep under attack.")
-      self:processNewBattle(keepID)
-      self:updateView()
-    end
-
+  if underAttack then
+   d("Keep under attack.")
+   self:processNewBattle(keepID)
+   self:updateView()
+  end
 end
 
-function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, owningAlliance, oldAlliance)
-  
+ function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, owningAlliance, oldAlliance)
+
   local self = CyrodiilAction
   local notificationText = "|t32:32:"..CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, battlegroundContext).."|t ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID))) .." captured ".. "|t32:32:"..CyrodiilAction.defaults.alliance[oldAlliance].pin.."|t > " .. "|t32:32:"..CyrodiilAction.defaults.alliance[owningAlliance].pin.."|t "
   local notificationType
@@ -160,64 +154,57 @@ function CyrodiilAction.OnWarScoreChanged(eventCode)
 end
 
 
-CyrodiilAction.battles = {}
 function CyrodiilAction:processNewBattle(keepID)
 
   local isKeepInBattles = false
   for i=#self.battles,1,-1 do
-   local v = self.battles[i]
-   if v.keepID == keepID then
-     isKeepInBattles = true
-   end
-end
-
-if not isKeepInBattles then
-  local battle = self.Battle.new(keepID)
-  table.insert(self.battles, battle)
-
-
-  local notificationText = "|t32:32:" .. CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, self.battleContext) .."|t New battle at  ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID)))
-  local notificationType
-
-  if battle:getActionType() == CyrodiilAction.ACTION_ATTACK then
-    notificationType = "info"
-  
-  else
-    notificationType = "danger"
+    local v = self.battles[i]
+    if v.keepID == keepID then
+      isKeepInBattles = true
+    end
   end
-  notification = {text= notificationText, notificationType};
 
-  self:processNotification(notification)
+  if not isKeepInBattles then
+    local battle = self.Battle.new(keepID)
+    table.insert(self.battles, battle)
 
-end
+    local notificationText = "|t32:32:" .. CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, self.battleContext) .."|t New battle at  ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID)))
+    local notificationType
 
+    if battle:getActionType() == CyrodiilAction.ACTION_ATTACK then
+      notificationType = "info"
+
+    else
+      notificationType = "danger"
+    end
+
+    notification = {text= notificationText, notificationType};
+    self:processNotification(notification)
+  end
 end 
 
 function CyrodiilAction:ProcessEndBattle(keepID)
- 
-for i=#self.battles,1,-1 do
-   local v = self.battles[i]
-   if v.keepID == keepID then
-     table.remove(self.battles, i)
-     self:updateView()
-   end
-end
+
+  for i=#self.battles,1,-1 do
+    local v = self.battles[i]
+    if v.keepID == keepID then
+      table.remove(self.battles, i)
+      self:updateView()
+    end
+  end
 end
 
 
 function CyrodiilAction:scanKeeps()
-
     --Keeps, ressources and Outposts
     for i=1,134 do
-        self:checkAdd(i)
+      self:checkAdd(i)
     end
-
 end
 
 function CyrodiilAction:checkAdd(keepID)
 
   --TODO check if Keep in self.battles
-  --TODO count siege
   if GetKeepUnderAttack(keepID, self.battleContext) then
     local battle = self.Battle.new(keepID)
     table.insert(self.battles, battle)
@@ -236,9 +223,9 @@ function CyrodiilAction:processBattle()
      ( self.battles[i].keepType == KEEPTYPE_RESOURCE and battleTime >= CyrodiilAction.defaults.timeBeforeResourceBattleClear ) then
      table.remove(self.battles, i)
     end
-  end
+ end
 
-  table.sort(self.battles, function(a,b) return a.points>b.points end)
+ table.sort(self.battles, function(a,b) return a.points>b.points end)
 
 end
 
@@ -252,7 +239,6 @@ function CyrodiilAction:processNotification(notificationText)
     CyrodiilAction.NotificationManager.freeze = 1
 
   else
-
     CyrodiilAction.NotificationManager.push(notificationText)
 
   end
@@ -278,63 +264,64 @@ function CyrodiilAction:processNotificationsUpdate()
       end
       notification = CyrodiilAction.NotificationManager.next()
       NotificationLabel:SetText(notification.text)
+
       if notification.type == "danger" then
         notificationTexture:SetColor(ZO_ColorDef:New("D91E18"):UnpackRGB())
       elseif notification.type == "success" then
         notificationTexture:SetColor(ZO_ColorDef:New("00B16A"):UnpackRGB())
       else
         notificationTexture:SetColor(ZO_ColorDef:New("19B5FE"):UnpackRGB())
-    end
+      end
+
       animation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
       backgroundAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
 
-  else
+    else
+      animation:FadeOut(0, 500, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+      backgroundAnimation:FadeOut(0, 500, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
 
-    animation:FadeOut(0, 500, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
-    backgroundAnimation:FadeOut(0, 500, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
-
+    end
   end
-end
 end
 
 function CyrodiilAction:updatePointsDisplay()
 
-local aldmeriPoints = GetControl("AldmeriPoints");
-local daggerfallPoints = GetControl("DaggerfallPoints");
-local ebonheartPoints = GetControl("EbonheartPoints");
+    local aldmeriPoints = GetControl("AldmeriPoints");
+    local daggerfallPoints = GetControl("DaggerfallPoints");
+    local ebonheartPoints = GetControl("EbonheartPoints");
 
-local aldmeriLabelAnimation = ZO_AlphaAnimation:New(aldmeriPoints)
-local daggerfallLabelAnimation = ZO_AlphaAnimation:New(daggerfallPoints)
-local ebonheartLabelAnimation = ZO_AlphaAnimation:New(ebonheartPoints)
+    local aldmeriLabelAnimation = ZO_AlphaAnimation:New(aldmeriPoints)
+    local daggerfallLabelAnimation = ZO_AlphaAnimation:New(daggerfallPoints)
+    local ebonheartLabelAnimation = ZO_AlphaAnimation:New(ebonheartPoints)
 
-aldmeriLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
-daggerfallLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
-ebonheartLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+    aldmeriLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+    daggerfallLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
+    ebonheartLabelAnimation:FadeIn(0, 500, ZO_ALPHA_ANIMATION_OPTION_FORCE_ALPHA, nil, ZO_ALPHA_ANIMATION_OPTION_USE_CURRENT_SHOWN )
 
 
-if self.pointsDisplayRing then
+    if self.pointsDisplayRing then
 
-    aldmeriPoints:SetText("+" .. GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION))
-    daggerfallPoints:SetText("+" ..GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT))
-    ebonheartPoints:SetText("+" ..GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_EBONHEART_PACT))
+      aldmeriPoints:SetText("+" .. GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION))
+      daggerfallPoints:SetText("+" ..GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT))
+      ebonheartPoints:SetText("+" ..GetCampaignAlliancePotentialScore(self.campaignId, ALLIANCE_EBONHEART_PACT))
 
-    aldmeriPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
-    daggerfallPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].color:UnpackRGBA())
-    ebonheartPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].color:UnpackRGBA())
+      aldmeriPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
+      daggerfallPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].color:UnpackRGBA())
+      ebonheartPoints:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].color:UnpackRGBA())
 
-else
-    aldmeriPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION)))
-    daggerfallPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT)))
-    ebonheartPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_EBONHEART_PACT)))
+    else
+      aldmeriPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION)))
+      daggerfallPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_DAGGERFALL_COVENANT)))
+      ebonheartPoints:SetText(CyrodiilAction.Utils.format_thousand(GetCampaignAllianceScore(self.campaignId, ALLIANCE_EBONHEART_PACT)))
 
-    aldmeriPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
-    daggerfallPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
-    ebonheartPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
-end
+      aldmeriPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+      daggerfallPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+      ebonheartPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
+    end
 
-self.pointsDisplayRing = not self.pointsDisplayRing
+    self.pointsDisplayRing = not self.pointsDisplayRing
 
-end
+  end
 
 
 function CyrodiilAction:updateView()
@@ -342,7 +329,6 @@ function CyrodiilAction:updateView()
    -- TODO refacto
   self:clearView()
 
-  
   if table.getn(self.battles) == 0 then 
     TitleLabel:SetHidden(false)
   else
@@ -357,13 +343,12 @@ function CyrodiilAction:updateView()
         local keepDataSiegeDC = GetControl("KeepSiegeDC" .. step)
         local keepDataSiegeEP = GetControl("KeepSiegeEP" .. step)
 
-
         if self.battles[i]:getActionType() == CyrodiilAction.ACTION_ATTACK then
           actionTypeTexture:SetTexture(CyrodiilAction.defaults.icons.actionAttack)
         else
           actionTypeTexture:SetTexture(CyrodiilAction.defaults.icons.actionDefend)
-
         end
+
         actionTypeTexture:SetHidden(false)
 
         keepNameLabel:SetText(zo_strformat("<<C:1>>",self.battles[i].keepName))
@@ -379,18 +364,17 @@ function CyrodiilAction:updateView()
         keepDataSiegeDC:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].color:UnpackRGBA())
         keepDataSiegeEP:SetText(self.battles[i].siege[ALLIANCE_EBONHEART_PACT])
         keepDataSiegeEP:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].color:UnpackRGBA())
-
       end
-    end 
+    end
   end
 end
 
-function CyrodiilAction:refreshCampaignTime()
-    local campaignTime = GetControl("CampaignTime");
-    local time = CyrodiilAction.Utils.format_time(GetSecondsUntilCampaignScoreReevaluation(self.campaignId));
-    campaignTime:SetText(time)
-end
 
+function CyrodiilAction:refreshCampaignTime()
+  local campaignTime = GetControl("CampaignTime");
+  local time = CyrodiilAction.Utils.format_time(GetSecondsUntilCampaignScoreReevaluation(self.campaignId));
+  campaignTime:SetText(time)
+end
 
 
 function CyrodiilAction:clearView()
@@ -422,29 +406,27 @@ end
 EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_ADD_ON_LOADED, CyrodiilAction.OnAddOnLoaded)
 
 
-    -- When the event fires, call this function & pass it keepId (given to you by the event) --
 function GetParentKeep(_keepId) 
-    local iKeepResourceType = GetKeepResourceType(_keepId) 
-        
-        -- If the resourceType is none then I'm guessing that makes it the main (parent) keep? --
-        -- so do this to check if its a main (parent) keep under attack --
-    if iKeepResourceType ==  RESOURCETYPE_NONE then
-        return _keepId
+  local iKeepResourceType = GetKeepResourceType(_keepId) 
+    -- If the resourceType is none then I'm guessing that makes it the main (parent) keep? --
+    -- so do this to check if its a main (parent) keep under attack --
+  if iKeepResourceType ==  RESOURCETYPE_NONE then
+    return _keepId
+  end
+
+-- Otherwise it is a resource keep so we need to find out which main (parent) --
+-- keep it belongs too --
+
+  local iNumKeeps = GetNumKeeps()
+
+  for i = 1, iNumKeeps do
+    local parentKeepId = GetKeepKeysByIndex(i)
+    local resourceKeepId = GetResourceKeepForKeep(parentKeepId, iKeepResourceType)
+      -- GetResourceKeepForKeep(integer parentKeepId, integer resourceType)
+      --     Returns: integer keepId 
+
+    if resourceKeepId == _keepId then
+      return parentKeepId
     end
-    
-    -- Otherwise it is a resource keep so we need to find out which main (parent) --
-    -- keep it belongs too --
-    
-    local iNumKeeps = GetNumKeeps()
-    
-    for i = 1, iNumKeeps do
-        local parentKeepId = GetKeepKeysByIndex(i)
-        local resourceKeepId = GetResourceKeepForKeep(parentKeepId, iKeepResourceType)
-        -- GetResourceKeepForKeep(integer parentKeepId, integer resourceType)
-        --     Returns: integer keepId 
- 
-        if resourceKeepId == _keepId then
-            return parentKeepId
-        end
-    end
+  end
 end
