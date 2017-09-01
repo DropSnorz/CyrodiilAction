@@ -90,9 +90,9 @@
       				<Controls>
       					<Texture name="ActionType1">
       						<Dimensions y="25" x="25"/>
-      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-         					</Texture>
-         					<Texture name="KeepAttackTexture1" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
+      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" offsetY="-2" />
+         				</Texture>
+         				<Texture name="KeepAttackTexture1" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
           					<Dimensions y="40" x="40"/>
          						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
      						</Texture>
@@ -123,9 +123,9 @@
       				<Controls>
       					<Texture name="ActionType2">
       						<Dimensions y="25" x="25"/>
-      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-         					</Texture>
-         					<Texture name="KeepAttackTexture2" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
+      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" offsetY="-2"/>
+         				</Texture>
+         				<Texture name="KeepAttackTexture2" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
           					<Dimensions y="40" x="40"/>
          						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
      						</Texture>
@@ -155,9 +155,9 @@
       				<Controls>
       					<Texture name="ActionType3">
       						<Dimensions y="25" x="25"/>
-      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-         					</Texture>
-         					<Texture name="KeepAttackTexture3" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
+      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" offsetY="-2"/>
+         				</Texture>
+         				<Texture name="KeepAttackTexture3" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
           					<Dimensions y="40" x="40"/>
          						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
      						</Texture>
@@ -187,9 +187,9 @@
       				<Controls>
       					<Texture name="ActionType4">
       						<Dimensions y="25" x="25"/>
-      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" />
-         					</Texture>
-         					<Texture name="KeepAttackTexture4" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
+      						<Anchor point="TOPLEFT" object="$(parent)" offsetX="5" offsetY="-2"/>
+         				</Texture>
+         				<Texture name="KeepAttackTexture4" textureFile="/esoui/art/mappins/ava_attackburst_64.dds" hidden="true">
           					<Dimensions y="40" x="40"/>
          						<Anchor point="TOPLEFT" object="$(parent)" offsetX="30" offsetY="-10" />
      						</Texture>
