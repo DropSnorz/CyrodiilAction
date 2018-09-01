@@ -1,7 +1,7 @@
 ## Title: CyrodiilAction
-## APIVersion: 100022
+## APIVersion: 100024
 ## AddOnVersion: 1
-## Version: 0.0.3
+## Version: 0.0.4
 ## Author: Dropsnorz
 
 CyrodiilAction.xml
