@@ -2,7 +2,9 @@ CyrodiilAction = CyrodiilAction or {}
 CyrodiilAction.NotificationManager = CyrodiilAction.NotificationManager or {}
 CyrodiilAction.Utils = {}
 
-
+----------------------------------------------
+-- Returns smaller keep names.
+----------------------------------------------
 function CyrodiilAction.Utils:shortenKeepName(str)
 
  return str:gsub(",..$", ""):gsub("%^.d$", "")
@@ -17,20 +19,23 @@ function CyrodiilAction.Utils:shortenKeepName(str)
 end
 
 
+----------------------------------------------
+-- Returns keep icon from keepID
+----------------------------------------------
 function CyrodiilAction.Utils.getKeepIcon(keepId)
 
   local keepType = GetKeepType(keepId)
-
   if keepType == KEEPTYPE_RESOURCE then
     local keepResourceType = GetKeepResourceType(keepId)
     return CyrodiilAction.defaults.icons.keep.resource[keepResourceType]
-
   else
     return CyrodiilAction.defaults.icons.keep[keepType]
   end
 end
 
-
+----------------------------------------------
+-- Returns keep icon based on battle context
+----------------------------------------------
 function CyrodiilAction.Utils.getKeepIconByBattleContext(keepId, battleContext)
 
 	local keepType = GetKeepType(keepId)
@@ -44,14 +49,17 @@ function CyrodiilAction.Utils.getKeepIconByBattleContext(keepId, battleContext)
   end
 end
 
-
+----------------------------------------------
+-- Fake notify command
+----------------------------------------------
 SLASH_COMMANDS["/notify"] = function (extra)
-
   CyrodiilAction.NotificationManager.push({text="New notification !", type="test"})
 
 end
 
-
+----------------------------------------------
+-- Format thousand numbers
+----------------------------------------------
 function CyrodiilAction.Utils.format_thousand(v)
   local s = string.format("%d", math.floor(v))
   local pos = string.len(s) % 3
@@ -62,13 +70,14 @@ function CyrodiilAction.Utils.format_thousand(v)
 end
 
 
+----------------------------------------------
 -- Converts seconds to minutes and seconds
+----------------------------------------------
 function CyrodiilAction.Utils.format_time(delta)
   local sec = delta % 60
   delta = (delta - sec) / 60
   local min = delta % 60
   local out = min .. "m"
-
   out = out .. " " .. sec .. "s"
   return out
 end

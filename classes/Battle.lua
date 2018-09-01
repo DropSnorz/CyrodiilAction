@@ -15,17 +15,18 @@ function CyrodiilAction.Battle.new(keepID)
   self.keepID = keepID
   self.keepName = CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID))
   self.keepType = GetKeepType(keepID)
-
-  self.owner = GetKeepAlliance(self.keepID, CyrodiilAction.battleContext)
-
   self.lastAttackTime = GetTimeStamp()
-
   self.siege = {}
+  -- Number of point relative to battle size
+  self.points = 0
   self:update()
 
   return self
 end
 
+-------------------------------------
+-- Update battle attributes
+-------------------------------------
 function CyrodiilAction.Battle:update()
 
   self.owner = GetKeepAlliance(self.keepID, CyrodiilAction.battleContext)
@@ -39,7 +40,7 @@ function CyrodiilAction.Battle:update()
   end
 
   self.points = self.siege[ALLIANCE_ALDMERI_DOMINION] + self.siege[ALLIANCE_DAGGERFALL_COVENANT] + self.siege[ALLIANCE_EBONHEART_PACT]
-
+  -- battles involving real keeps are bigger then the others.
   if self.keepType == KEEPTYPE_KEEP then
     self.points = self.points + 10
   end
@@ -47,13 +48,14 @@ end
 
 
 function CyrodiilAction.Battle:createView()
-
   view = CreateControlFromVirtual("BattleLine", CyrodiilActionWindow, "BattleLine", self.KeepID)
   view:SetText(self.KeepName)
 end
 
-
-function CyrodiilAction.Battle:GetKeepIcon()
+-------------------------------------
+-- Returns keep icon for this battle instance
+-------------------------------------
+function CyrodiilAction.Battle:getKeepIcon()
 
   if self.keepType == KEEPTYPE_RESOURCE then
     local keepResourceType = GetKeepResourceType(self.keepID)
@@ -63,10 +65,13 @@ function CyrodiilAction.Battle:GetKeepIcon()
   end
 end
 
+-------------------------------------
+-- Returns keep action based on player action
+-- CyrodiilAction.ACTION_DEFEND or CyrodiilAction.ACTION_ATTACK
+-------------------------------------
 function CyrodiilAction.Battle:getActionType()
 
   if self.keepType == KEEPTYPE_RESOURCE then
-
     local parentKeepID = GetParentKeep(self.keepID)
     local parentKeepOwner = GetKeepAlliance(parentKeepID, CyrodiilAction.battleContext)
 
@@ -77,15 +82,10 @@ function CyrodiilAction.Battle:getActionType()
     end
 
   else
-
     if self.owner == CyrodiilAction.playerAlliance then 
       return CyrodiilAction.ACTION_DEFEND
-
     else
       return CyrodiilAction.ACTION_ATTACK
     end
   end
 end
-
-
-

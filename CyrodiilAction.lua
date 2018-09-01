@@ -3,17 +3,33 @@ CyrodiilAction.battles = {}
 CyrodiilAction.notifications = {}
 CyrodiilAction.name = "CyrodiilAction"
 CyrodiilAction.isWindowClosed = false
+-- Indicates if total or potential alliance points are displayed
 CyrodiilAction.pointsDisplayRing = false
 CyrodiilAction.debug = false
 
+-------------------------------------
+-- Called when AddOn has been successfully loaded.
+-------------------------------------
+function CyrodiilAction.OnAddOnLoaded(event, addonName)
+  -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
+  if addonName == CyrodiilAction.name then
+    CyrodiilAction:Initialize()
+  end
+end
 
+
+-------------------------------------
+-- Bootstraps AddOn
+-------------------------------------
 function CyrodiilAction:Initialize()
 
   EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_PLAYER_ACTIVATED, self.OnPlayerZoneChanged)
 
 end
 
-
+-------------------------------------
+-- Event handler catching player zone changes.
+-------------------------------------
 function CyrodiilAction.OnPlayerZoneChanged(_, initial)
 
   local self = CyrodiilAction
@@ -21,36 +37,39 @@ function CyrodiilAction.OnPlayerZoneChanged(_, initial)
 
 end
 
-
+-------------------------------------
+-- Setup AddOn UI and event bindings
+-------------------------------------
 function CyrodiilAction:setupUI()
 
   CyrodiilAction.Logger.log("zone changed")
   if IsPlayerInAvAWorld() and not self.isWindowClosed then 
-    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
-    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_ALLIANCE_OWNER_CHANGED , self.OnKeepOwnerChanged)
-    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_CAMPAIGN_SCORE_DATA_CHANGED, self.OnWarScoreChanged)
     self.battleContext = BGQUERY_LOCAL
     self.playerAlliance = GetUnitAlliance("player")
     self.campaignId = GetCurrentCampaignId()
     CyrodiilActionWindowBG:SetAlpha(0.5)
 
+    self:scanKeeps()
+    self:updateScoreDisplay()
+
     EVENT_MANAGER:RegisterForUpdate("BattleCheckUpdate", 10000, function()
      CyrodiilAction.Logger.log("Check battles changes...")
-     self:processBattle()
+     self:updateBattleList()
      self:updateView()
      end)
 
     EVENT_MANAGER:RegisterForUpdate("NotificationsUpdate", 5000, function() 
       self:processNotificationsUpdate() 
-      self:updatePointsDisplay()
-
+      self:updateScoreDisplay()
       end)
 
     EVENT_MANAGER:RegisterForUpdate("RefreshCycle", 1000, function()
-      self:refreshCampaignTime();
+      self:updateCampaignTime();
       end)
 
-
+    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_UNDER_ATTACK_CHANGED, self.OnKeepStatusUpdate)
+    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_KEEP_ALLIANCE_OWNER_CHANGED , self.OnKeepOwnerChanged)
+    EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_CAMPAIGN_SCORE_DATA_CHANGED, self.OnWarScoreChanged)
 
     notificationAnimation, notificationAnimationTimeline = CreateSimpleAnimation(ANIMATION_TEXTURE, GetControl("NotificationTexture"))
     notificationAnimation:SetImageData(4, 8)
@@ -58,8 +77,6 @@ function CyrodiilAction:setupUI()
     notificationAnimationTimeline:SetPlaybackType(ANIMATION_PLAYBACK_LOOP, LOOP_INDEFINITELY)
     notificationAnimationTimeline:PlayFromStart()
 
-    self:scanKeeps()
-    self:updatePointsDisplay()
     self:updateView()
     CyrodiilActionWindow:SetHidden(false)
   else
@@ -71,22 +88,9 @@ function CyrodiilAction:setupUI()
   end
 end
 
-function CyrodiilAction.CloseWindow()
-
-  self = CyrodiilAction
-  self.isWindowClosed = true
-  self:setupUI()
-
-end
-
-
-function CyrodiilAction.OnAddOnLoaded(event, addonName)
-  -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
-  if addonName == CyrodiilAction.name then
-    CyrodiilAction:Initialize()
-  end
-end
-
+-------------------------------------
+-- Event handler catching keep status updates
+-------------------------------------
 function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, underAttack)
   local self = CyrodiilAction
   self.battleContext = battlegroundContext
@@ -103,8 +107,10 @@ function CyrodiilAction.OnKeepStatusUpdate(_, keepID, battlegroundContext, under
   end
 end
 
+-------------------------------------
+-- Event handler catching keep owner changes
+-------------------------------------
  function CyrodiilAction.OnKeepOwnerChanged(_, keepID, battlegroundContext, owningAlliance, oldAlliance)
-
   local self = CyrodiilAction
   local notificationText = "|t32:32:"..CyrodiilAction.Utils.getKeepIconByBattleContext(keepID, battlegroundContext).."|t ".. zo_strformat("<<C:1>>",CyrodiilAction.Utils:shortenKeepName(GetKeepName(keepID))) .." captured ".. "|t32:32:"..CyrodiilAction.defaults.alliance[oldAlliance].pin.."|t > " .. "|t32:32:"..CyrodiilAction.defaults.alliance[owningAlliance].pin.."|t "
   local notificationType
@@ -116,17 +122,17 @@ end
   end
 
   local notification = {text= notificationText, type=notificationType};
-
   self:processNotification(notification)
-
 end
 
+-------------------------------------
+-- Event handler catching war score updates
+-------------------------------------
 function CyrodiilAction.OnWarScoreChanged(eventCode)
   local self = CyrodiilAction
 
   local notificationText="War score updated !"
   local notification = {text= notificationText, type="info"};
-
   self:processNotification(notification)
 
   local aldmeriScore = GetCampaignAllianceScore(self.campaignId, ALLIANCE_ALDMERI_DOMINION)
@@ -139,33 +145,24 @@ function CyrodiilAction.OnWarScoreChanged(eventCode)
 
   notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].pin.."|t " .. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_ALDMERI_DOMINION)) .. ": " .. aldmeriScore .. " (+" ..aldmeriPotentialScore .. ")"
   notification = {text= notificationText, type="info"};
-
   self:processNotification(notification)
 
   notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_DAGGERFALL_COVENANT].pin.."|t ".. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_DAGGERFALL_COVENANT)) .. ": " ..  daggerfallScore .. " (+" ..daggerfallPotentialScore .. ")"
   notification = {text= notificationText, type="info"};
-
   self:processNotification(notification)
 
   notificationText="|t32:32:"..CyrodiilAction.defaults.alliance[ALLIANCE_EBONHEART_PACT].pin.."|t ".. zo_strformat("<<C:1>>",GetAllianceName(ALLIANCE_EBONHEART_PACT)) .. ": " ..  ebonheartScore .. " (+" ..ebonheartPotentialScore .. ")"
   notification = {text=notificationText, type="ifno"};
-
   self:processNotification(notification)
 
 end
 
-
+-------------------------------------
+-- Process new incoming battle
+-------------------------------------
 function CyrodiilAction:processNewBattle(keepID)
 
-  local isKeepInBattles = false
-  for i=#self.battles,1,-1 do
-    local v = self.battles[i]
-    if v.keepID == keepID then
-      isKeepInBattles = true
-    end
-  end
-
-  if not isKeepInBattles then
+  if not self:battleListContains(keepID) then
     local battle = self.Battle.new(keepID)
     table.insert(self.battles, battle)
 
@@ -174,7 +171,6 @@ function CyrodiilAction:processNewBattle(keepID)
 
     if battle:getActionType() == CyrodiilAction.ACTION_ATTACK then
       notificationType = "info"
-
     else
       notificationType = "danger"
     end
@@ -184,42 +180,46 @@ function CyrodiilAction:processNewBattle(keepID)
   end
 end 
 
-function CyrodiilAction:ProcessEndBattle(keepID)
+
+-------------------------------------
+-- Scan and adds all keeps under attack
+-------------------------------------
+function CyrodiilAction:scanKeeps()
+    --Keeps, ressources and Outposts
+    for i=1,134 do
+      if GetKeepUnderAttack(keepID, self.battleContext)
+       and not self:battleListContains(i) then
+        local battle = self.Battle.new(keepID)
+        table.insert(self.battles, battle)
+      end
+    end
+end
+
+
+-------------------------------------
+-- Checks if the battle list contains the given keepID
+-------------------------------------
+function CyrodiilAction:battleListContains(keepID)
 
   for i=#self.battles,1,-1 do
     local v = self.battles[i]
     if v.keepID == keepID then
-      table.remove(self.battles, i)
-      self:updateView()
+      return true
     end
   end
+  return false;
 end
 
 
-function CyrodiilAction:scanKeeps()
-    --Keeps, ressources and Outposts
-    for i=1,134 do
-      self:checkAdd(i)
-    end
-end
-
-function CyrodiilAction:checkAdd(keepID)
-
-  --TODO check if Keep in self.battles
-  if GetKeepUnderAttack(keepID, self.battleContext) then
-    local battle = self.Battle.new(keepID)
-    table.insert(self.battles, battle)
-  end
-end
-
-function CyrodiilAction:processBattle()
+-------------------------------------
+-- Update battle list
+-------------------------------------
+function CyrodiilAction:updateBattleList()
 
   for i=#self.battles,1,-1 do
     self.battles[i]:update()
-
     CyrodiilAction.Logger.log(GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime))
     local battleTime = GetDiffBetweenTimeStamps(GetTimeStamp(), self.battles[i].lastAttackTime)
-
     if battleTime >= CyrodiilAction.defaults.timeBeforeBattleClear or 
      ( self.battles[i].keepType == KEEPTYPE_RESOURCE and battleTime >= CyrodiilAction.defaults.timeBeforeResourceBattleClear ) then
      table.remove(self.battles, i)
@@ -230,23 +230,24 @@ function CyrodiilAction:processBattle()
 
 end
 
+-------------------------------------
+-- Add a new notification
+-------------------------------------
 function CyrodiilAction:processNotification(notificationText)
 
   if CyrodiilAction.NotificationManager.getSize() == 0 then
-
     CyrodiilAction.NotificationManager.push(notificationText)
     self:processNotificationsUpdate()
-
     CyrodiilAction.NotificationManager.freeze = 1
 
   else
     CyrodiilAction.NotificationManager.push(notificationText)
-
   end
 end
 
-
-
+-------------------------------------
+-- Update notifications display
+-------------------------------------
 function CyrodiilAction:processNotificationsUpdate()
 
   local animation = ZO_AlphaAnimation:New(NotificationLabel)
@@ -285,7 +286,10 @@ function CyrodiilAction:processNotificationsUpdate()
   end
 end
 
-function CyrodiilAction:updatePointsDisplay()
+-------------------------------------
+-- Update score display
+-------------------------------------
+function CyrodiilAction:updateScoreDisplay()
 
     local aldmeriPoints = GetControl("AldmeriPoints");
     local daggerfallPoints = GetControl("DaggerfallPoints");
@@ -319,15 +323,15 @@ function CyrodiilAction:updatePointsDisplay()
       daggerfallPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
       ebonheartPoints:SetColor(CyrodiilAction.colors.white:UnpackRGBA())
     end
-
     self.pointsDisplayRing = not self.pointsDisplayRing
-
   end
 
-
+-------------------------------------
+-- Update battle display
+-------------------------------------
 function CyrodiilAction:updateView()
 
-   -- TODO refacto
+   -- TODO: avoid clearing entire UI beofre fill it.
   self:clearView()
 
   if table.getn(self.battles) == 0 then 
@@ -335,14 +339,13 @@ function CyrodiilAction:updateView()
   else
     for i = 0, 4 do
       if self.battles[i] ~= nil then
-        local step = i
         local actionTypeTexture = GetControl("ActionType"..i)
-        local keepNameLabel = GetControl("KeepNameLabel" ..step)
-        local keepAttackTexture = GetControl("KeepAttackTexture" .. step)
-        local keepTexture = GetControl("KeepTexture" .. step)
-        local keepDataSiegeAD = GetControl("KeepSiegeAD" .. step)
-        local keepDataSiegeDC = GetControl("KeepSiegeDC" .. step)
-        local keepDataSiegeEP = GetControl("KeepSiegeEP" .. step)
+        local keepNameLabel = GetControl("KeepNameLabel" ..i)
+        local keepAttackTexture = GetControl("KeepAttackTexture" .. i)
+        local keepTexture = GetControl("KeepTexture" .. i)
+        local keepDataSiegeAD = GetControl("KeepSiegeAD" .. i)
+        local keepDataSiegeDC = GetControl("KeepSiegeDC" .. i)
+        local keepDataSiegeEP = GetControl("KeepSiegeEP" .. i)
 
         if self.battles[i]:getActionType() == CyrodiilAction.ACTION_ATTACK then
           actionTypeTexture:SetTexture(CyrodiilAction.defaults.icons.actionAttack)
@@ -356,7 +359,7 @@ function CyrodiilAction:updateView()
         keepAttackTexture:SetHidden(not self.battles[i].isKeepUnderAttack)
         keepAttackTexture:SetColor(CyrodiilAction.defaults.alliance[ALLIANCE_ALDMERI_DOMINION].color:UnpackRGBA())
 
-        keepTexture:SetTexture(self.battles[i]:GetKeepIcon())
+        keepTexture:SetTexture(self.battles[i]:getKeepIcon())
         keepTexture:SetColor(CyrodiilAction.defaults.alliance[self.battles[i].owner].color:UnpackRGBA())
 
         keepDataSiegeAD:SetText(self.battles[i].siege[ALLIANCE_ALDMERI_DOMINION])
@@ -370,20 +373,23 @@ function CyrodiilAction:updateView()
   end
 end
 
-
-function CyrodiilAction:refreshCampaignTime()
+-------------------------------------
+-- Update campign time display display
+-------------------------------------
+function CyrodiilAction:updateCampaignTime()
   local campaignTime = GetControl("CampaignTime");
   local time = CyrodiilAction.Utils.format_time(GetSecondsUntilCampaignScoreReevaluation(self.campaignId));
   campaignTime:SetText(time)
 end
 
 
+-------------------------------------
+-- Clear AddOn view
+-------------------------------------
 function CyrodiilAction:clearView()
 
   TitleLabel:SetHidden(true)
-
   for i = 1, 4 do
-
     local actionTypeTexture = GetControl("ActionType"..i)
     local keepNameLabel = GetControl("KeepNameLabel" ..i)
     local keepAttackTexture = GetControl("KeepAttackTexture" .. i)
@@ -392,7 +398,6 @@ function CyrodiilAction:clearView()
     local keepDataSiegeDC = GetControl("KeepSiegeDC" .. i)
     local keepDataSiegeEP = GetControl("KeepSiegeEP" .. i)
 
-
     actionTypeTexture:SetHidden(true)
     keepNameLabel:SetText("")
     keepAttackTexture:SetHidden(true)
@@ -400,13 +405,21 @@ function CyrodiilAction:clearView()
     keepDataSiegeAD:SetText("")
     keepDataSiegeDC:SetText("")
     keepDataSiegeEP:SetText("")
-
   end
 end
 
-EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_ADD_ON_LOADED, CyrodiilAction.OnAddOnLoaded)
+-------------------------------------
+-- Cose UI
+-------------------------------------
+function CyrodiilAction.CloseWindow()
+  self = CyrodiilAction
+  self.isWindowClosed = true
+  self:setupUI()
+end
 
-
+-------------------------------------
+-- Returns the resource parent keep
+-------------------------------------
 function GetParentKeep(_keepId) 
   local iKeepResourceType = GetKeepResourceType(_keepId) 
     -- If the resourceType is none then I'm guessing that makes it the main (parent) keep? --
@@ -431,3 +444,5 @@ function GetParentKeep(_keepId)
     end
   end
 end
+
+EVENT_MANAGER:RegisterForEvent(CyrodiilAction.name, EVENT_ADD_ON_LOADED, CyrodiilAction.OnAddOnLoaded)
