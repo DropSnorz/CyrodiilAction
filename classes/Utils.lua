@@ -44,6 +44,18 @@ function CyrodiilAction.Utils.getKeepIconByBattleContext(keepId, battleContext)
 	if keepType == KEEPTYPE_RESOURCE then
     local keepResourceType = GetKeepResourceType(keepId)
     return CyrodiilAction.defaults.icons.ava.keep.resource[keepResourceType][alliance]
+  elseif keepType == KEEPTYPE_BRIDGE then
+    if IsKeepPassable(keepId, battleContext) then
+      return CyrodiilAction.defaults.icons.keep.bridge["PASSABLE"]
+    else
+      return CyrodiilAction.defaults.icons.keep.bridge["NOT_PASSABLE"]
+    end
+  elseif keepType == KEEPTYPE_MILEGATE then
+    if IsKeepPassable(keepId, battleContext) then
+      return CyrodiilAction.defaults.icons.keep.milegate["PASSABLE"]
+    else
+      return CyrodiilAction.defaults.icons.keep.milegate["NOT_PASSABLE"]
+    end
   else
     return CyrodiilAction.defaults.icons.ava.keep[keepType][alliance]
   end

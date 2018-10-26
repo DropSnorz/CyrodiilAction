@@ -1,5 +1,5 @@
 ## Title: CyrodiilAction
-## APIVersion: 100024
+## APIVersion: 100025
 ## AddOnVersion: 1
 ## Version: 0.0.4
 ## Author: Dropsnorz
